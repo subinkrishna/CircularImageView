@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CircularImageView">
+        <attr name="borderColor" format="color" />
+        <attr name="borderWidth" format="dimension" />
+        <attr name="placeholderBackgroundColor" format="color" />
+        <attr name="placeholderCharacter" format="string" />
+        <attr name="placeholderCharacterSize" format="dimension" />
+    </declare-styleable>
+</resources>

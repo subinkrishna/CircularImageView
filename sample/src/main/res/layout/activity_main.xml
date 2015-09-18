@@ -1,0 +1,39 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="#DDD"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <com.subinkrishna.widget.CircularImageView
+        android:layout_width="200dp"
+        android:layout_height="100dp"
+        android:layout_margin="5dp"
+        app:placeholderCharacter="C"
+        app:placeholderCharacterSize="18sp"
+        app:placeholderBackgroundColor="@android:color/holo_orange_dark"
+        app:borderColor="#000"
+        app:borderWidth="0dp" />
+
+    <com.subinkrishna.widget.CircularImageView
+        android:layout_width="100dp"
+        android:layout_height="200dp"
+        android:layout_margin="5dp"
+        app:borderColor="@android:color/white"
+        app:borderWidth="1dp"
+        android:src="@drawable/c2" />
+
+    <com.subinkrishna.widget.CircularImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_margin="5dp"
+        app:borderColor="#FFFFFF"
+        android:src="@drawable/c3" />
+
+</LinearLayout>
