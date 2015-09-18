@@ -5,6 +5,7 @@
         <attr name="borderWidth" format="dimension" />
         <attr name="placeholderBackgroundColor" format="color" />
         <attr name="placeholderCharacter" format="string" />
+        <attr name="placeholderCharacterColor" format="color" />
         <attr name="placeholderCharacterSize" format="dimension" />
     </declare-styleable>
 </resources>
