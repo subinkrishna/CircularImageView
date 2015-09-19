@@ -45,9 +45,9 @@ public class CircularImageView extends ImageView {
     private static final String TAG = CircularImageView.class.getSimpleName();
 
     /** Default colors */
-    @ColorInt private static final int DEFAULT_BORDER_COLOR = 0xFFFFFFFF;
-    @ColorInt private static final int DEFAULT_BACKGROUND_COLOR = 0xFFDDDDDD;
-    @ColorInt private static final int DEFAULT_TEXT_COLOR = 0xFF000000;
+    private static final int DEFAULT_BORDER_COLOR = 0xFFFFFFFF;
+    private static final int DEFAULT_BACKGROUND_COLOR = 0xFFDDDDDD;
+    private static final int DEFAULT_TEXT_COLOR = 0xFF000000;
 
     private Paint mBitmapPaint;
     private Paint mBorderPaint;
@@ -57,9 +57,9 @@ public class CircularImageView extends ImageView {
 
     // Configurations
     private int mBorderWidth;
-    @ColorInt private int mBorderColor;
-    @ColorInt private int mBackgroundColor;
-    @ColorInt private int mTextColor;
+    private int mBorderColor;
+    private int mBackgroundColor;
+    private int mTextColor;
     private String mText;
     private int mTextSize;
 
