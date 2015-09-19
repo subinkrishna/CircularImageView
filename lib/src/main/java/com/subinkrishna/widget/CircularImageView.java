@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2015 Subinkrishna Gopi
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.subinkrishna.widget;
 
 import android.content.Context;
@@ -15,9 +31,12 @@ import android.net.Uri;
 import android.support.annotation.ColorInt;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.widget.ImageView;
 
 /**
+ * Circular Image View.
+ *
  * @author Subinkrishna Gopi
  */
 public class CircularImageView extends ImageView {
@@ -28,21 +47,21 @@ public class CircularImageView extends ImageView {
     /** Default colors */
     @ColorInt private static final int DEFAULT_BORDER_COLOR = 0xFFFFFFFF;
     @ColorInt private static final int DEFAULT_BACKGROUND_COLOR = 0xFFDDDDDD;
-    @ColorInt private static final int DEFAULT_PLACEHOLDER_TEXT_COLOR = 0xFF000000;
+    @ColorInt private static final int DEFAULT_TEXT_COLOR = 0xFF000000;
 
-    private Paint mBorderPaint;
     private Paint mBitmapPaint;
-    private Paint mPlaceHolderBgPaint;
-    private Paint mPlaceHolderTextPaint;
+    private Paint mBorderPaint;
+    private Paint mBackgroundPaint;
+    private Paint mTextPaint;
     private int mWidth, mHeight, mRadius;
 
     // Configurations
     private int mBorderWidth;
     @ColorInt private int mBorderColor;
-    @ColorInt private int mPlaceHolderBgColor;
-    @ColorInt private int mPlaceHolderTextColor;
-    private String mPlaceHolderText;
-    private int mPlaceHolderTextSize;
+    @ColorInt private int mBackgroundColor;
+    @ColorInt private int mTextColor;
+    private String mText;
+    private int mTextSize;
 
     public CircularImageView(Context context) {
         super(context);
@@ -69,18 +88,18 @@ public class CircularImageView extends ImageView {
 
         // Extract configurations
         mBorderColor = DEFAULT_BORDER_COLOR;
-        mPlaceHolderBgColor = DEFAULT_BACKGROUND_COLOR;
+        mBackgroundColor = DEFAULT_BACKGROUND_COLOR;
 
         if (null != t) {
             mBorderWidth = t.getDimensionPixelSize(R.styleable.CircularImageView_borderWidth, 0);
             mBorderColor = t.getColor(R.styleable.CircularImageView_borderColor,
                     DEFAULT_BORDER_COLOR);
-            mPlaceHolderBgColor = t.getColor(R.styleable.CircularImageView_placeholderBackgroundColor,
+            mBackgroundColor = t.getColor(R.styleable.CircularImageView_placeholderBackgroundColor,
                     DEFAULT_BACKGROUND_COLOR);
-            mPlaceHolderText = t.getString(R.styleable.CircularImageView_placeholderCharacter);
-            mPlaceHolderTextColor = t.getColor(R.styleable.CircularImageView_placeholderCharacterColor,
-                    DEFAULT_PLACEHOLDER_TEXT_COLOR);
-            mPlaceHolderTextSize = t.getDimensionPixelSize(R.styleable.CircularImageView_placeholderCharacterSize, 0);
+            mText = t.getString(R.styleable.CircularImageView_placeholderText);
+            mTextColor = t.getColor(R.styleable.CircularImageView_placeholderTextColor,
+                    DEFAULT_TEXT_COLOR);
+            mTextSize = t.getDimensionPixelSize(R.styleable.CircularImageView_placeholderTextSize, 0);
 
             t.recycle();
         }
@@ -88,29 +107,29 @@ public class CircularImageView extends ImageView {
         mBitmapPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
         setBorderInternal(mBorderWidth, mBorderColor, false);
-        setPlaceHolderTextInternal(mPlaceHolderText,
-                mPlaceHolderTextColor, mPlaceHolderTextSize, false);
+        setPlaceholderTextInternal(mText,
+                mTextColor, mTextSize, false);
 
-        mPlaceHolderBgPaint = new Paint();
-        mPlaceHolderBgPaint.setAntiAlias(true);
-        mPlaceHolderBgPaint.setColor(mPlaceHolderBgColor);
-        mPlaceHolderBgPaint.setStyle(Paint.Style.FILL);
+        mBackgroundPaint = new Paint();
+        mBackgroundPaint.setAntiAlias(true);
+        mBackgroundPaint.setColor(mBackgroundColor);
+        mBackgroundPaint.setStyle(Paint.Style.FILL);
     }
 
     /**
      * Sets the border paint (and configs).
      *
-     * @param width
+     * @param rawSize
      * @param color
      * @param invalidate
      */
-    private void setBorderInternal(int width,
+    private void setBorderInternal(int rawSize,
                                    @ColorInt int color,
                                    boolean invalidate) {
-        mBorderWidth = width;
+        mBorderWidth = rawSize;
         mBorderColor = color;
 
-        if ((null == mBorderPaint) && (width > 0)) {
+        if ((null == mBorderPaint) && (rawSize > 0)) {
             mBorderPaint = new Paint();
             mBorderPaint.setAntiAlias(true);
             mBorderPaint.setStyle(Paint.Style.STROKE);
@@ -129,35 +148,29 @@ public class CircularImageView extends ImageView {
 
     /**
      * Sets placeholder text paint and configs.
-     *
      * @param text
      * @param color
-     * @param size
+     * @param textSize
      * @param invalidate
      */
-    private void setPlaceHolderTextInternal(String text,
+    private void setPlaceholderTextInternal(String text,
                                             @ColorInt int color,
-                                            int size,
+                                            int textSize,
                                             boolean invalidate) {
         // Takes only the first character as the place holder
-        mPlaceHolderText = (null != text) ? text.trim() : null;
-        mPlaceHolderText = !TextUtils.isEmpty(mPlaceHolderText)
-                ? String.valueOf(mPlaceHolderText.charAt(0)) : null;
-        mPlaceHolderTextColor = color;
-        mPlaceHolderTextSize = size;
+        mText = formatPlaceholderText(text);
+        mTextColor = color;
+        mTextSize = textSize;
 
-        if ((null == mPlaceHolderTextPaint) &&
-            (size > 0) &&
-            !TextUtils.isEmpty(text)) {
-            mPlaceHolderTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-            mPlaceHolderTextPaint.setStyle(Paint.Style.FILL);
-            mPlaceHolderTextPaint.setTypeface(Typeface.DEFAULT);
-            mPlaceHolderTextPaint.setTextAlign(Paint.Align.CENTER);
+        if ((null == mTextPaint) &&
+            (textSize > 0) &&
+            !TextUtils.isEmpty(mText)) {
+            mTextPaint = getTextPaint();
         }
 
-        if (null != mPlaceHolderTextPaint) {
-            mPlaceHolderTextPaint.setColor(color);
-            mPlaceHolderTextPaint.setTextSize(size);
+        if (null != mTextPaint) {
+            mTextPaint.setColor(color);
+            mTextPaint.setTextSize(textSize);
         }
 
         // Invalidate the view if asked
@@ -172,14 +185,16 @@ public class CircularImageView extends ImageView {
         mWidth = w;
         mHeight = h;
         mRadius = Math.min(w, h) / 2;
-        update();
+        if (null != mBitmapPaint) {
+            updateBitmapShader();
+        }
     }
 
     @Override
     public void setImageDrawable(Drawable drawable) {
         super.setImageDrawable(drawable);
         if (null != mBitmapPaint) {
-            update();
+            updateBitmapShader();
         }
     }
 
@@ -187,7 +202,7 @@ public class CircularImageView extends ImageView {
     public void setImageResource(int resId) {
         super.setImageResource(resId);
         if (null != mBitmapPaint) {
-            update();
+            updateBitmapShader();
         }
     }
 
@@ -195,23 +210,24 @@ public class CircularImageView extends ImageView {
     public void setImageURI(Uri uri) {
         super.setImageURI(uri);
         if (null != mBitmapPaint) {
-            update();
+            updateBitmapShader();
         }
     }
 
     /**
      * Sets the border width.
      *
-     * @param widthInPixels
+     * @param unit The desired dimension unit.
+     * @param size
      */
-    public void setBorderWidth(int widthInPixels) {
-        if (widthInPixels < 0) {
+    public final void setBorderWidth(int unit,
+                                     int size) {
+        if (size < 0) {
             throw new IllegalArgumentException("Border width cannot be less than zero.");
         }
 
-        if (widthInPixels != mBorderWidth) {
-            setBorderInternal(widthInPixels, mBorderColor, true);
-        }
+        int scaledSize = (int) TypedValue.applyDimension(unit, size, getResources().getDisplayMetrics());
+        setBorderInternal(scaledSize, mBorderColor, true);
     }
 
     /**
@@ -219,43 +235,97 @@ public class CircularImageView extends ImageView {
      *
      * @param color
      */
-    public void setBorderColor(@ColorInt int color) {
+    public final void setBorderColor(@ColorInt int color) {
         if (color != mBorderColor) {
             setBorderInternal(mWidth, color, true);
         }
     }
 
-    public void setPlaceholder(char character) {
-        String str = String.valueOf(character);
-        if (!str.equalsIgnoreCase(mPlaceHolderText)) {
-            setPlaceHolderTextInternal(str, mPlaceHolderTextColor, mPlaceHolderTextSize, true);
+    /**
+     * Sets the placeholder text.
+     *
+     * @param text
+     */
+    public final void setPlaceholder(String text) {
+        if (!text.equalsIgnoreCase(mText)) {
+            setPlaceholderTextInternal(text, mTextColor, mTextSize, true);
         }
     }
 
-    public void setPlaceholder(char character,
-                               @ColorInt int backgroundColor,
-                               @ColorInt int textColor) {
+    /**
+     * Sets the placeholder text size.
+     *
+     * @param unit The desired dimension unit.
+     * @param size
+     */
+    public final void setPlaceholderTextSize(int unit,
+                                             int size) {
+        if (size < 0) {
+            throw new IllegalArgumentException("Text size cannot be less than zero.");
+        }
+
+        int scaledSize = (int) TypedValue.applyDimension(unit, size, getResources().getDisplayMetrics());
+        setPlaceholderTextInternal(mText, mTextColor, scaledSize, true);
+    }
+
+    /**
+     * Set the placeholder text and colors.
+     *
+     * @param text
+     * @param backgroundColor
+     * @param textColor
+     */
+    public final void setPlaceholder(String text,
+                                     @ColorInt int backgroundColor,
+                                     @ColorInt int textColor) {
         boolean invalidate = false;
         // Set the placeholder background color
-        if (backgroundColor != mPlaceHolderBgColor) {
-            mPlaceHolderBgColor = backgroundColor;
-            if (null != mPlaceHolderBgPaint) {
-                mPlaceHolderBgPaint.setColor(backgroundColor);
+        if (backgroundColor != mBackgroundColor) {
+            mBackgroundColor = backgroundColor;
+            if (null != mBackgroundPaint) {
+                mBackgroundPaint.setColor(backgroundColor);
                 invalidate = true;
             }
         }
         // Set the placeholder text color
-        String str = String.valueOf(character);
-        if (!str.equalsIgnoreCase(mPlaceHolderText) ||
-            (backgroundColor != mPlaceHolderBgColor) ||
-            (textColor != mPlaceHolderTextColor)) {
-            setPlaceHolderTextInternal(str, textColor, mPlaceHolderTextSize, false);
+        if (!text.equalsIgnoreCase(mText) ||
+            (backgroundColor != mBackgroundColor) ||
+            (textColor != mTextColor)) {
+            setPlaceholderTextInternal(text, textColor, mTextSize, false);
             invalidate = true;
         }
 
         if (invalidate) {
             invalidate();
         }
+    }
+
+    /**
+     * Default implementation of the placeholder text formatting.
+     *
+     * @param text
+     * @return
+     */
+    protected String formatPlaceholderText(String text) {
+        String formattedText = (null != text) ? text.trim() : null;
+        int length = (null != formattedText) ? formattedText.length() : 0;
+        if (length > 0) {
+            return formattedText.substring(0, Math.min(2, length)).toUpperCase();
+        }
+        return null;
+    }
+
+    /**
+     * Default implementation of text {@code Paint} creation.
+     *
+     * @return
+     */
+    protected Paint getTextPaint() {
+        Paint textPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        textPaint.setStyle(Paint.Style.FILL);
+        textPaint.setTypeface(Typeface.DEFAULT);
+        textPaint.setTextAlign(Paint.Align.CENTER);
+        return textPaint;
     }
 
     @Override
@@ -268,11 +338,11 @@ public class CircularImageView extends ImageView {
             canvas.drawCircle(x, y, mRadius - mBorderWidth, mBitmapPaint);
         } else {
             // Placeholder background
-            canvas.drawCircle(x, y, mRadius - mBorderWidth, mPlaceHolderBgPaint);
+            canvas.drawCircle(x, y, mRadius - mBorderWidth, mBackgroundPaint);
             // Placeholder character
-            if ((null != mPlaceHolderTextPaint) && !TextUtils.isEmpty(mPlaceHolderText)) {
-                int ty = (int) ((mHeight - (mPlaceHolderTextPaint.ascent() + mPlaceHolderTextPaint.descent())) * 0.5f);
-                canvas.drawText(mPlaceHolderText, x, ty, mPlaceHolderTextPaint);
+            if ((null != mTextPaint) && !TextUtils.isEmpty(mText)) {
+                int ty = (int) ((mHeight - (mTextPaint.ascent() + mTextPaint.descent())) * 0.5f);
+                canvas.drawText(mText, x, ty, mTextPaint);
             }
         }
 
@@ -280,10 +350,6 @@ public class CircularImageView extends ImageView {
         if ((null != mBorderPaint) && (mBorderWidth > 0)) {
             canvas.drawCircle(x, y, mRadius - (mBorderWidth * 0.5f), mBorderPaint);
         }
-    }
-
-    private void update() {
-        updateBitmapShader();
     }
 
     /**

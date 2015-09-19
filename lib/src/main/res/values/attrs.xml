@@ -4,8 +4,8 @@
         <attr name="borderColor" format="color" />
         <attr name="borderWidth" format="dimension" />
         <attr name="placeholderBackgroundColor" format="color" />
-        <attr name="placeholderCharacter" format="string" />
-        <attr name="placeholderCharacterColor" format="color" />
-        <attr name="placeholderCharacterSize" format="dimension" />
+        <attr name="placeholderText" format="string" />
+        <attr name="placeholderTextColor" format="color" />
+        <attr name="placeholderTextSize" format="dimension" />
     </declare-styleable>
 </resources>

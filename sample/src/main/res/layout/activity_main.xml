@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:background="#DDD"
+    android:background="#EEE"
     android:orientation="vertical"
     tools:context=".MainActivity">
 
@@ -17,26 +17,39 @@
         android:layout_height="100dp"
         android:layout_margin="5dp"
         android:src="@drawable/c1"
-        app:placeholderCharacter="C"
-        app:placeholderCharacterColor="#FFF"
-        app:placeholderCharacterSize="50sp"
-        app:placeholderBackgroundColor="@android:color/holo_orange_light"
-        app:borderColor="@android:color/holo_orange_dark"
-        app:borderWidth="2dp" />
+        app:borderWidth="3dp"
+        app:borderColor="#FFF" />
 
     <com.subinkrishna.widget.CircularImageView
-        android:layout_width="100dp"
-        android:layout_height="200dp"
+        android:id="@+id/image2"
+        android:layout_width="50dp"
+        android:layout_height="70dp"
         android:layout_margin="5dp"
-        app:borderColor="@android:color/white"
-        app:borderWidth="2dp"
-        android:src="@drawable/c2" />
+        app:placeholderBackgroundColor="@android:color/holo_orange_light"
+        app:placeholderTextSize="22sp"
+        app:placeholderTextColor="#FFF"
+        app:placeholderText="CV" />
 
     <com.subinkrishna.widget.CircularImageView
+        android:id="@+id/image3"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_margin="5dp"
-        app:borderColor="#FFFFFF"
         android:src="@drawable/c3" />
+
+    <com.subinkrishna.widget.CircularImageView
+        android:id="@+id/image4"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_margin="5dp"
+        app:borderWidth="2dp"
+        app:borderColor="#FFF"
+        android:src="@drawable/c2" />
+
+    <com.subinkrishna.widget.CircularImageView
+        android:id="@+id/image5"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_margin="5dp" />
 
 </LinearLayout>
