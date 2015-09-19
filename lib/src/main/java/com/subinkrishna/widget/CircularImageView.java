@@ -21,6 +21,7 @@ import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
+import android.graphics.ColorFilter;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Shader;
@@ -211,6 +212,15 @@ public class CircularImageView extends ImageView {
         super.setImageURI(uri);
         if (null != mBitmapPaint) {
             updateBitmapShader();
+        }
+    }
+
+    @Override
+    public void setColorFilter(ColorFilter cf) {
+        // NOTE: All other variations of ImageView#setColorFilter will
+        // end up calling ImageView#setColorFilter(ColorFilter).
+        if (null != mBitmapPaint) {
+            mBitmapPaint.setColorFilter(cf);
         }
     }
 

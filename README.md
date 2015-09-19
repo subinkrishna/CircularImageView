@@ -30,7 +30,7 @@ imageView.setPlaceholder("CV", Color.BLACK, Color.WHITE);
 imageView.setPlaceholderTextSize(TypedValue.COMPLEX_UNIT_SP, 22);
 ````
 
-#### Custom Attributes
+**Custom Attributes**
 
 * `borderWidth` (default: `0`)
 * `borderColor` (default: `#FFFFFFFF`)
@@ -39,7 +39,7 @@ imageView.setPlaceholderTextSize(TypedValue.COMPLEX_UNIT_SP, 22);
 * `placeholderTextColor` (default: `#FF000000`)
 * `placeholderBackgroundColor` (default: `#FFDDDDDD`)
 
-#### Java Methods
+**Java Methods**
 
 * `setBorderWidth(int unit, int size)`
 * `setBorderColor(@ColorInt int color)`
@@ -47,9 +47,14 @@ imageView.setPlaceholderTextSize(TypedValue.COMPLEX_UNIT_SP, 22);
 * `setPlaceholder(String text, @ColorInt int backgroundColor, @ColorInt int textColor)`
 * `setPlaceholderTextSize(int unit, int size)`
 
+**Extending CircularImageView**
+
+* `formatPlaceholderText(String text)`: override to customize the formatting of placeholder text. The default implementation picks the first two characters from the supplied text. (**NOTE**: `CircularImageView` supports only single line placeholders.)
+* `getTextPaint()`: override to change the `Paint` used to draw the placeholder text.
+
 ### Download
 
-Download the latest version from [releases][1]. 
+Download the latest version from [releases][1].
 
 ## License
 
