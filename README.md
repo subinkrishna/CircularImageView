@@ -30,7 +30,7 @@ imageView.setPlaceholder("CV", Color.BLACK, Color.WHITE);
 imageView.setPlaceholderTextSize(TypedValue.COMPLEX_UNIT_SP, 22);
 ````
 
-##### Custom Attributes
+#### Custom Attributes
 
 * `borderWidth` (default: `0`)
 * `borderColor` (default: `#FFFFFFFF`)
@@ -39,7 +39,7 @@ imageView.setPlaceholderTextSize(TypedValue.COMPLEX_UNIT_SP, 22);
 * `placeholderTextColor` (default: `#FF000000`)
 * `placeholderBackgroundColor` (default: `#FFDDDDDD`)
 
-##### Java Methods
+#### Java Methods
 
 * `setBorderWidth(int unit, int size)`
 * `setBorderColor(@ColorInt int color)`
@@ -49,7 +49,7 @@ imageView.setPlaceholderTextSize(TypedValue.COMPLEX_UNIT_SP, 22);
 
 ### Download
 
-Download the latest version from [releases][1]. Current version is 1.0.
+Download the latest version from [releases][1]. 
 
 ## License
 
@@ -67,4 +67,4 @@ Download the latest version from [releases][1]. Current version is 1.0.
     See the License for the specific language governing permissions and
     limitations under the License.
 
-[1]: releases
+[1]: ../../releases
