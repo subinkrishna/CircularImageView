@@ -4,20 +4,30 @@ Android ImageView implementation that draws circular images with support for opt
 
 ### Usage
 
+**XML:**
+
 ````xml
 <com.subinkrishna.widget.CircularImageView
     android:id="@+id/image"
     android:layout_width="50dp"
     android:layout_height="50dp"
     android:src="@drawable/c2"
-
-    <!-- Custom attributes -->
     app:borderWidth="2dp"
-    app:borderColor="#FFF"
-    app:placeholderBackgroundColor="@android:color/holo_orange_light"
+    app:borderColor="@android:color/white"
+    app:placeholderBackgroundColor="@android:color/black"
     app:placeholderText="CV"
     app:placeholderTextSize="22sp"
-    app:placeholderTextColor="#FFF" />
+    app:placeholderTextColor="@android:color/white" />
+````
+
+**Java:**
+
+````java
+CircularImageView imageView = findViewById(R.id.image);
+imageView.setBorderColor(Color.WHITE);
+imageView.setBorderWidth(TypedValue.COMPLEX_UNIT_DIP, 2);
+imageView.setPlaceholder("CV", Color.BLACK, Color.WHITE);
+imageView.setPlaceholderTextSize(TypedValue.COMPLEX_UNIT_SP, 22);
 ````
 
 ##### Custom Attributes
@@ -41,8 +51,6 @@ Android ImageView implementation that draws circular images with support for opt
 
 Download the latest version from [releases][1]. Current version is 1.0.
 
-### Samples
-
 ## License
 
     Copyright (C) 2015 Subinkrishna Gopi
@@ -59,4 +67,4 @@ Download the latest version from [releases][1]. Current version is 1.0.
     See the License for the specific language governing permissions and
     limitations under the License.
 
-[1]: sample
+[1]: releases
