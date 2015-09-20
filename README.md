@@ -79,7 +79,7 @@ XML:
 Java:
 
 ````java
-ImageView i1 = (ImageView) findViewById(R.id.image1);
+CircularImageView i1 = (CircularImageView) findViewById(R.id.image1);
 Picasso.with(this)
     .load("https://raw.githubusercontent.com/subinkrishna/CircularImageView/master/art/cat_original.jpg")
     .placeholder(R.drawable.placeholder)
@@ -109,7 +109,7 @@ XML:
 Java:
 
 ````java
-ImageView i2 = (ImageView) findViewById(R.id.image2);
+CircularImageView i2 = (CircularImageView) findViewById(R.id.image2);
 Glide.with(this)
     .load("http://invalid.url")
     .asBitmap()
@@ -129,9 +129,9 @@ Glide.with(this)
     app:borderColor="@android:color/holo_blue_dark"/>
 ````
 
-**#4 Placeholder text with border**
+**#4 Placeholder text with custom border & background**
 
-Placeholder text is shown along with custom background and border when no bitmap is loaded.
+Placeholder text is shown along with custom border & background when no bitmap is loaded.
 
 ````xml
 <com.subinkrishna.widget.CircularImageView
