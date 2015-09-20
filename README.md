@@ -1,8 +1,20 @@
 CircularImageView
 ====
-Android ImageView implementation that draws circular images with support for optional placeholder text.
+Android ImageView implementation that draws circular images with support for optional placeholder text. CircularTextView works with [Picasso][picasso] & [Glide][glide].
 
 ![Cat](art/cat.png)
+
+## Dependencies
+
+````xml
+dependencies {
+    compile 'com.android.support:support-annotations:23.0.0'
+}
+````
+
+## Download
+
+Download the latest version from [releases][1].
 
 # Usage
 
@@ -48,23 +60,6 @@ imageView.setPlaceholderTextSize(TypedValue.COMPLEX_UNIT_SP, 22);
 * `setPlaceholder(String text)`
 * `setPlaceholder(String text, @ColorInt int backgroundColor, @ColorInt int textColor)`
 * `setPlaceholderTextSize(int unit, int size)`
-
-**Extending CircularImageView**
-
-* `formatPlaceholderText(String text)`: override to customize the formatting of placeholder text. The default implementation picks the first two characters from the supplied text. (**NOTE**: `CircularImageView` supports only single line placeholders.)
-* `getTextPaint()`: override to change the `Paint` used to draw the placeholder text.
-
-## Dependencies
-
-````xml
-dependencies {
-    compile 'com.android.support:support-annotations:23.0.0'
-}
-````
-
-## Download
-
-Download the latest version from [releases][1].
 
 ## Samples
 
@@ -122,9 +117,6 @@ Glide.with(this)
     .into(i2);
 ````
 
-**NOTE:**
-CircularImageView doesn't support animations. Please use `DrawableTypeRequest.asBitmap()` to make CircularImageView to work with Glide.
-
 **#3 Local asset**
 
 ````xml
@@ -152,6 +144,12 @@ Placeholder text is shown along with custom background and border when no bitmap
     app:placeholderText="CV"/>
 ````
 
+## Limitations & known issues
+
+* Supports only `BitmapDrawable`s.
+* CircularImageView doesn't resize bitmaps to match the view size.
+* No support for animations. Please use `DrawableTypeRequest.asBitmap()` to make CircularImageView to work with [Glide][glide].
+
 ## License
 
     Copyright (C) 2015 Subinkrishna Gopi
@@ -169,3 +167,5 @@ Placeholder text is shown along with custom background and border when no bitmap
     limitations under the License.
 
 [1]: ../../releases
+[picasso]: http://square.github.io/picasso/
+[glide]: https://github.com/bumptech/glide
