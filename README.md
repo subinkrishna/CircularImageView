@@ -4,7 +4,7 @@ Android ImageView implementation that draws circular images with support for opt
 
 ![cat](art/cat.png)
 
-### Usage
+# Usage
 
 **XML:**
 
@@ -54,7 +54,7 @@ imageView.setPlaceholderTextSize(TypedValue.COMPLEX_UNIT_SP, 22);
 * `formatPlaceholderText(String text)`: override to customize the formatting of placeholder text. The default implementation picks the first two characters from the supplied text. (**NOTE**: `CircularImageView` supports only single line placeholders.)
 * `getTextPaint()`: override to change the `Paint` used to draw the placeholder text.
 
-### Download
+## Download
 
 Download the latest version from [releases][1].
 
