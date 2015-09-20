@@ -35,6 +35,8 @@ import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.widget.ImageView;
 
+import java.util.Locale;
+
 /**
  * Circular Image View.
  *
@@ -320,7 +322,7 @@ public class CircularImageView extends ImageView {
         String formattedText = (null != text) ? text.trim() : null;
         int length = (null != formattedText) ? formattedText.length() : 0;
         if (length > 0) {
-            return formattedText.substring(0, Math.min(2, length)).toUpperCase();
+            return formattedText.substring(0, Math.min(2, length)).toUpperCase(Locale.getDefault());
         }
         return null;
     }
