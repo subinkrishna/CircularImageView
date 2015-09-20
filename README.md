@@ -1,6 +1,6 @@
 CircularImageView
 ====
-Android ImageView implementation that draws circular images with support for optional placeholder text. CircularTextView works with [Picasso][picasso] & [Glide][glide].
+Android ImageView implementation that draws circular images with support for optional placeholder text. CircularTextView works with [Picasso][picasso] (tested with picasso:2.5.2) & [Glide][glide] (tested with glide:3.6.1).
 
 ![Cat](art/cat.png)
 
