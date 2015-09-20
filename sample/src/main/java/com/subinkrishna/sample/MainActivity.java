@@ -4,6 +4,10 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
+
+import com.bumptech.glide.Glide;
+import com.squareup.picasso.Picasso;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -11,6 +15,23 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Picasso
+        ImageView i1 = (ImageView) findViewById(R.id.image1);
+        Picasso.with(this)
+                .load("https://raw.githubusercontent.com/subinkrishna/CircularImageView/master/art/cat_original.jpg")
+                .placeholder(R.drawable.placeholder)
+                .centerCrop()
+                .resize(200, 200)
+                .into(i1);
+
+        // Glide
+        ImageView i2 = (ImageView) findViewById(R.id.image2);
+        Glide.with(this)
+                .load("http://invalid.url")
+                .asBitmap()
+                .error(R.drawable.placeholder)
+                .into(i2);
     }
 
     @Override

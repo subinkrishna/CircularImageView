@@ -2,7 +2,7 @@ CircularImageView
 ====
 Android ImageView implementation that draws circular images with support for optional placeholder text.
 
-![cat](art/cat.png)
+![Cat](art/cat.png)
 
 # Usage
 
@@ -54,9 +54,45 @@ imageView.setPlaceholderTextSize(TypedValue.COMPLEX_UNIT_SP, 22);
 * `formatPlaceholderText(String text)`: override to customize the formatting of placeholder text. The default implementation picks the first two characters from the supplied text. (**NOTE**: `CircularImageView` supports only single line placeholders.)
 * `getTextPaint()`: override to change the `Paint` used to draw the placeholder text.
 
+## Dependencies
+
+````xml
+dependencies {
+    compile 'com.android.support:support-annotations:23.0.0'
+}
+````
+
 ## Download
 
 Download the latest version from [releases][1].
+
+## Samples
+
+![Sample](screenshots/samples.png)
+
+**#1 Using Picasso**
+
+    XML:
+
+    ```` xml
+    <com.subinkrishna.widget.CircularImageView
+            android:id="@+id/image1"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_margin="10dp" />
+    ````
+
+    Java:
+
+    ````java
+    ImageView i1 = (ImageView) findViewById(R.id.image1);
+    Picasso.with(this)
+            .load("https://raw.githubusercontent.com/subinkrishna/CircularImageView/master/art/cat_original.jpg")
+            .placeholder(R.drawable.placeholder)
+            .centerCrop()
+            .resize(200, 200)
+            .into(i1);
+    ````
 
 ## License
 
