@@ -76,10 +76,9 @@ XML:
 
 ```` xml
 <com.subinkrishna.widget.CircularImageView
-        android:id="@+id/image1"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_margin="10dp" />
+    android:id="@+id/image1"
+    android:layout_width="100dp"
+    android:layout_height="100dp" />
 ````
 
 Java:
@@ -87,11 +86,11 @@ Java:
 ````java
 ImageView i1 = (ImageView) findViewById(R.id.image1);
 Picasso.with(this)
-        .load("https://raw.githubusercontent.com/subinkrishna/CircularImageView/master/art/cat_original.jpg")
-        .placeholder(R.drawable.placeholder)
-        .centerCrop()
-        .resize(200, 200)
-        .into(i1);
+    .load("https://raw.githubusercontent.com/subinkrishna/CircularImageView/master/art/cat_original.jpg")
+    .placeholder(R.drawable.placeholder)
+    .centerCrop()
+    .resize(200, 200)
+    .into(i1);
 ````
 
 **#2 Using Glide - Error handling**
@@ -102,14 +101,13 @@ XML:
 
 ````xml
 <com.subinkrishna.widget.CircularImageView
-        android:id="@+id/image2"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_margin="10dp"
-        app:placeholderBackgroundColor="@android:color/holo_orange_light"
-        app:placeholderTextSize="42sp"
-        app:placeholderTextColor="#FFF"
-        app:placeholderText="CV" />
+    android:id="@+id/image2"
+    android:layout_width="100dp"
+    android:layout_height="100dp"
+    app:placeholderBackgroundColor="@android:color/holo_orange_light"
+    app:placeholderTextSize="42sp"
+    app:placeholderTextColor="#FFF"
+    app:placeholderText="CV" />
 
 ````
 
@@ -118,14 +116,41 @@ Java:
 ````java
 ImageView i2 = (ImageView) findViewById(R.id.image2);
 Glide.with(this)
-        .load("http://invalid.url")
-        .asBitmap()
-        .error(R.drawable.placeholder)
-        .into(i2);
+    .load("http://invalid.url")
+    .asBitmap()
+    .error(R.drawable.placeholder)
+    .into(i2);
 ````
 
-    **NOTE:**
-    CircularImageView doesn't support animations. Please use `DrawableTypeRequest.asBitmap()` to make CircularImageView to work with Glide.
+**NOTE:**
+CircularImageView doesn't support animations. Please use `DrawableTypeRequest.asBitmap()` to make CircularImageView to work with Glide.
+
+**#3 Local asset**
+
+````xml
+<com.subinkrishna.widget.CircularImageView
+    android:id="@+id/image3"
+    android:layout_width="100dp"
+    android:layout_height="100dp"
+    android:src="@drawable/c1"
+    app:borderWidth="3dp"
+    app:borderColor="@android:color/holo_blue_dark"/>
+````
+
+**#4 Placeholder text with border**
+
+Placeholder text is shown along with custom background and border when no bitmap is loaded.
+
+````xml
+<com.subinkrishna.widget.CircularImageView
+    android:id="@+id/image5"
+    android:layout_width="100dp"
+    android:layout_height="100dp"
+    app:placeholderBackgroundColor="@android:color/holo_orange_light"
+    app:placeholderTextSize="42sp"
+    app:placeholderTextColor="#FFF"
+    app:placeholderText="CV"/>
+````
 
 ## License
 
