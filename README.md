@@ -72,27 +72,60 @@ Download the latest version from [releases][1].
 
 **#1 Using Picasso**
 
-    XML:
+XML:
 
-    ```` xml
-    <com.subinkrishna.widget.CircularImageView
-            android:id="@+id/image1"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_margin="10dp" />
-    ````
+```` xml
+<com.subinkrishna.widget.CircularImageView
+        android:id="@+id/image1"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_margin="10dp" />
+````
 
-    Java:
+Java:
 
-    ````java
-    ImageView i1 = (ImageView) findViewById(R.id.image1);
-    Picasso.with(this)
-            .load("https://raw.githubusercontent.com/subinkrishna/CircularImageView/master/art/cat_original.jpg")
-            .placeholder(R.drawable.placeholder)
-            .centerCrop()
-            .resize(200, 200)
-            .into(i1);
-    ````
+````java
+ImageView i1 = (ImageView) findViewById(R.id.image1);
+Picasso.with(this)
+        .load("https://raw.githubusercontent.com/subinkrishna/CircularImageView/master/art/cat_original.jpg")
+        .placeholder(R.drawable.placeholder)
+        .centerCrop()
+        .resize(200, 200)
+        .into(i1);
+````
+
+**#2 Using Glide - Error handling**
+
+Placeholder image is shown in the sample since Glide tried to load an image from an invalid URL.
+
+XML:
+
+````xml
+<com.subinkrishna.widget.CircularImageView
+        android:id="@+id/image2"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_margin="10dp"
+        app:placeholderBackgroundColor="@android:color/holo_orange_light"
+        app:placeholderTextSize="42sp"
+        app:placeholderTextColor="#FFF"
+        app:placeholderText="CV" />
+
+````
+
+Java:
+
+````java
+ImageView i2 = (ImageView) findViewById(R.id.image2);
+Glide.with(this)
+        .load("http://invalid.url")
+        .asBitmap()
+        .error(R.drawable.placeholder)
+        .into(i2);
+````
+
+    **NOTE:**
+    CircularImageView doesn't support animations. Please use `DrawableTypeRequest.asBitmap()` to make CircularImageView to work with Glide.
 
 ## License
 
