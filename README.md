@@ -2,6 +2,8 @@ CircularImageView
 ====
 Android ImageView implementation that draws circular images with support for optional placeholder text.
 
+![cat](art/cat.png)
+
 ### Usage
 
 **XML:**
