@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  
+  <groupId>com.subinkrishna</groupId>
+  <artifactId>circularimageview</artifactId>
+  <version>1.0.0</version>  
+  <packaging>aar</packaging>
+  <name>CircularImageView</name>
+  <description>Android ImageView implementation that draws circular images with support for optional placeholder text. CircularImageView supports Picasso and Glide.</description>
+  <url>https://github.com/subinkrishna/CircularImageView</url>
+  
+  <licenses>
+    <license>
+      <name>The Apache License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+    </license>
+  </licenses>
+  
+  <developers>
+    <developer>
+      <name>Subinkrishna Gopi</name>
+      <email>subinkrishna.gopi@gmail.com</email>
+      <organization>Subinkrishna Gopi</organization>
+      <organizationUrl>https://github.com/subinkrishna</organizationUrl>
+    </developer>
+  </developers>
+  
+  <scm>
+    <connection>scm:git:git@github.com:subinkrishna/CircularImageView.git</connection>
+    <developerConnection>scm:git:git@github.com:subinkrishna/CircularImageView.git</developerConnection>
+    <url>git@github.com:subinkrishna/CircularImageView.git</url>
+  </scm>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.android.support</groupId>
+      <artifactId>support-annotations</artifactId>
+      <version>23.0.0</version>
+    </dependency>
+  </dependencies>
+
+</project>
