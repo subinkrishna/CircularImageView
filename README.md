@@ -4,17 +4,18 @@ Android ImageView implementation that draws circular images with support for opt
 
 ![Cat](art/cat.png)
 
-## Dependencies
-
-````xml
-dependencies {
-    compile 'com.android.support:support-annotations:23.0.0'
-}
-````
-
 ## Download
 
 Download the latest version from [releases][1].
+
+**Gradle**
+
+````groovy
+dependencies {
+    compile 'com.subinkrishna:circularimageview:1.0.0'
+}
+````
+
 
 # Usage
 
