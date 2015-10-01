@@ -8,12 +8,22 @@ Android ImageView implementation that draws circular images with support for opt
 
 Download the latest version from [releases][1].
 
-**Gradle**
+Or get it using Gradle:
 
 ````groovy
 dependencies {
     compile 'com.subinkrishna:circularimageview:1.0.0'
 }
+````
+
+Or Maven:
+
+````xml
+<dependency>
+  <groupId>com.subinkrishna</groupId>
+  <artifactId>circularimageview</artifactId>
+  <version>1.0.0</version>
+</dependency>
 ````
 
 
