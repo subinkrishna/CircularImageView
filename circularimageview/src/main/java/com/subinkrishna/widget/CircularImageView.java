@@ -24,15 +24,18 @@ import android.graphics.Canvas;
 import android.graphics.ColorFilter;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.Shader;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.support.annotation.CallSuper;
 import android.support.annotation.ColorInt;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.TypedValue;
+import android.widget.Checkable;
 import android.widget.ImageView;
 
 import java.util.Locale;
@@ -42,7 +45,9 @@ import java.util.Locale;
  *
  * @author Subinkrishna Gopi
  */
-public class CircularImageView extends ImageView {
+public class CircularImageView
+        extends ImageView
+        implements Checkable {
 
     /** Log tag */
     private static final String TAG = CircularImageView.class.getSimpleName();
@@ -50,21 +55,31 @@ public class CircularImageView extends ImageView {
     /** Default colors */
     private static final int DEFAULT_BORDER_COLOR = 0xFFFFFFFF;
     private static final int DEFAULT_BACKGROUND_COLOR = 0xFFDDDDDD;
+    private static final int DEFAULT_CHECKED_BACKGROUND_COLOR = 0xFFBBBBBB;
     private static final int DEFAULT_TEXT_COLOR = 0xFF000000;
+    private static final int DEFAULT_CHECK_STROKE_COLOR = 0xFFFFFFFF;
+
+    private static final float DEFAULT_CHECK_STROKE_WIDTH_IN_DP = 3f;
 
     private Paint mBitmapPaint;
     private Paint mBorderPaint;
     private Paint mBackgroundPaint;
+    private Paint mCheckMarkPaint;
+    private Paint mCheckedBackgroundPaint;
     private Paint mTextPaint;
     private int mWidth, mHeight, mRadius;
+    private int mCheckStrokeWidth, mLongStrokeHeight;
+    private Path mPath = new Path();
 
     // Configurations
     private int mBorderWidth;
     private int mBorderColor;
     private int mBackgroundColor;
+    private int mCheckedBackgroundColor;
     private int mTextColor;
     private String mText;
     private int mTextSize;
+    private boolean mChecked;
 
     public CircularImageView(Context context) {
         super(context);
@@ -92,6 +107,7 @@ public class CircularImageView extends ImageView {
         // Extract configurations
         mBorderColor = DEFAULT_BORDER_COLOR;
         mBackgroundColor = DEFAULT_BACKGROUND_COLOR;
+        mCheckedBackgroundColor = DEFAULT_CHECKED_BACKGROUND_COLOR;
 
         if (null != t) {
             mBorderWidth = t.getDimensionPixelSize(R.styleable.CircularImageView_ci_borderWidth, 0);
@@ -103,6 +119,10 @@ public class CircularImageView extends ImageView {
             mTextColor = t.getColor(R.styleable.CircularImageView_ci_placeholderTextColor,
                     DEFAULT_TEXT_COLOR);
             mTextSize = t.getDimensionPixelSize(R.styleable.CircularImageView_ci_placeholderTextSize, 0);
+
+            mChecked = t.getBoolean(R.styleable.CircularImageView_ci_checked, false);
+            mCheckedBackgroundColor = t.getColor(R.styleable.CircularImageView_ci_checkedBackgroundColor,
+                    DEFAULT_CHECKED_BACKGROUND_COLOR);
 
             t.recycle();
         }
@@ -117,6 +137,18 @@ public class CircularImageView extends ImageView {
         mBackgroundPaint.setAntiAlias(true);
         mBackgroundPaint.setColor(mBackgroundColor);
         mBackgroundPaint.setStyle(Paint.Style.FILL);
+
+        mCheckedBackgroundPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mCheckedBackgroundPaint.setColor(mCheckedBackgroundColor);
+        mCheckedBackgroundPaint.setStyle(Paint.Style.FILL);
+
+        mCheckStrokeWidth = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, DEFAULT_CHECK_STROKE_WIDTH_IN_DP,
+                getResources().getDisplayMetrics());
+
+        mCheckMarkPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mCheckMarkPaint.setColor(DEFAULT_CHECK_STROKE_COLOR);
+        mCheckMarkPaint.setStyle(Paint.Style.STROKE);
+        mCheckMarkPaint.setStrokeWidth(mCheckStrokeWidth);
     }
 
     /**
@@ -183,11 +215,16 @@ public class CircularImageView extends ImageView {
     }
 
     @Override
+    @CallSuper
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
         mWidth = w;
         mHeight = h;
         mRadius = Math.min(w, h) / 2;
+
+        // Check stroke
+        mLongStrokeHeight = mRadius;
+
         if (null != mBitmapPaint) {
             updateBitmapShader();
         }
@@ -345,23 +382,59 @@ public class CircularImageView extends ImageView {
         int x = mWidth / 2;
         int y = mHeight / 2;
 
-        if (null != getDrawable()) {
-            // Draws the bitmap if available
-            canvas.drawCircle(x, y, mRadius - mBorderWidth, mBitmapPaint);
-        } else {
-            // Placeholder background
-            canvas.drawCircle(x, y, mRadius - mBorderWidth, mBackgroundPaint);
-            // Placeholder character
-            if ((null != mTextPaint) && !TextUtils.isEmpty(mText)) {
-                int ty = (int) ((mHeight - (mTextPaint.ascent() + mTextPaint.descent())) * 0.5f);
-                canvas.drawText(mText, x, ty, mTextPaint);
+        // Is checked?
+        if (mChecked) {
+            drawCheckedState(canvas, mWidth, mHeight);
+        }
+        else {
+            if (null != getDrawable()) {
+                // Draws the bitmap if available
+                canvas.drawCircle(x, y, mRadius - mBorderWidth, mBitmapPaint);
+            } else {
+                // Placeholder background
+                canvas.drawCircle(x, y, mRadius - mBorderWidth, mBackgroundPaint);
+                // Placeholder character
+                if ((null != mTextPaint) && !TextUtils.isEmpty(mText)) {
+                    int ty = (int) ((mHeight - (mTextPaint.ascent() + mTextPaint.descent())) * 0.5f);
+                    canvas.drawText(mText, x, ty, mTextPaint);
+                }
+            }
+
+            // Draw the border
+            if ((null != mBorderPaint) && (mBorderWidth > 0)) {
+                canvas.drawCircle(x, y, mRadius - (mBorderWidth * 0.5f), mBorderPaint);
             }
         }
+    }
 
-        // Draw the border
-        if ((null != mBorderPaint) && (mBorderWidth > 0)) {
-            canvas.drawCircle(x, y, mRadius - (mBorderWidth * 0.5f), mBorderPaint);
-        }
+    /**
+     * Draws the checked state.
+     *
+     * @param canvas
+     * @param w
+     * @param h
+     */
+    protected void drawCheckedState(Canvas canvas, int w, int h) {
+        int x = w / 2;
+        int y = h / 2;
+
+        canvas.drawCircle(x, y, mRadius, mCheckedBackgroundPaint);
+        canvas.save();
+
+        int shortStrokeHeight = (int) (mLongStrokeHeight * .4f);
+        int halfH = (int) (mLongStrokeHeight * .5f);
+        int offset = (int)(shortStrokeHeight * .3f);
+        int sx = x + offset;
+        int sy = y - offset;
+        mPath.reset();
+        mPath.moveTo(sx, sy - halfH);
+        mPath.lineTo(sx, sy + halfH); // draw long stroke
+        mPath.moveTo(sx + (mCheckStrokeWidth * .5f), sy + halfH);
+        mPath.lineTo(sx - shortStrokeHeight, sy + halfH); // draw short stroke
+
+        canvas.rotate(45f, x, y);
+        canvas.drawPath(mPath, mCheckMarkPaint);
+        canvas.restore();
     }
 
     /**
@@ -400,5 +473,21 @@ public class CircularImageView extends ImageView {
                 Shader.TileMode.CLAMP);
         shader.setLocalMatrix(matrix);
         mBitmapPaint.setShader(shader);
+    }
+
+    @Override
+    public void setChecked(boolean checked) {
+        mChecked = checked;
+        invalidate();
+    }
+
+    @Override
+    public boolean isChecked() {
+        return mChecked;
+    }
+
+    @Override
+    public void toggle() {
+        setChecked(!mChecked);
     }
 }

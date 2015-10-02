@@ -4,10 +4,12 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.squareup.picasso.Picasso;
+import com.subinkrishna.widget.CircularImageView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -32,6 +34,14 @@ public class MainActivity extends AppCompatActivity {
                 .asBitmap()
                 .error(R.drawable.placeholder)
                 .into(i2);
+
+        final CircularImageView i4 = (CircularImageView) findViewById(R.id.image5);
+        i4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                i4.toggle();
+            }
+        });
     }
 
     @Override

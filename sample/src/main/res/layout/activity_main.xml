@@ -42,8 +42,9 @@
         android:layout_height="100dp"
         android:layout_margin="10dp"
         app:ci_placeholderBackgroundColor="@android:color/holo_orange_light"
-        app:ci_placeholderTextSize="42sp"
+        app:ci_placeholderTextSize="24sp"
         app:ci_placeholderTextColor="#FFF"
-        app:ci_placeholderText="CV"/>
+        app:ci_placeholderText="CV"
+        app:ci_checked="true"/>
 
 </LinearLayout>
