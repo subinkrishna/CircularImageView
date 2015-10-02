@@ -12,7 +12,7 @@ Or get it using Gradle:
 
 ````groovy
 dependencies {
-    compile 'com.subinkrishna:circularimageview:1.0.0'
+    compile 'com.subinkrishna:circularimageview:1.0.1'
 }
 ````
 
