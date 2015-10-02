@@ -37,12 +37,12 @@ Or Maven:
     android:layout_width="50dp"
     android:layout_height="50dp"
     android:src="@drawable/c2"
-    app:borderWidth="2dp"
-    app:borderColor="@android:color/white"
-    app:placeholderBackgroundColor="@android:color/black"
-    app:placeholderText="CV"
-    app:placeholderTextSize="22sp"
-    app:placeholderTextColor="@android:color/white" />
+    app:ci_borderWidth="2dp"
+    app:ci_borderColor="@android:color/white"
+    app:ci_placeholderBackgroundColor="@android:color/black"
+    app:ci_placeholderText="CV"
+    app:ci_placeholderTextSize="22sp"
+    app:ci_placeholderTextColor="@android:color/white" />
 ````
 
 **Java:**
@@ -110,10 +110,10 @@ XML:
     android:id="@+id/image2"
     android:layout_width="100dp"
     android:layout_height="100dp"
-    app:placeholderBackgroundColor="@android:color/holo_orange_light"
-    app:placeholderTextSize="42sp"
-    app:placeholderTextColor="#FFF"
-    app:placeholderText="CV" />
+    app:ci_placeholderBackgroundColor="@android:color/holo_orange_light"
+    app:ci_placeholderTextSize="42sp"
+    app:ci_placeholderTextColor="#FFF"
+    app:ci_placeholderText="CV" />
 
 ````
 
@@ -136,8 +136,8 @@ Glide.with(this)
     android:layout_width="100dp"
     android:layout_height="100dp"
     android:src="@drawable/c1"
-    app:borderWidth="3dp"
-    app:borderColor="@android:color/holo_blue_dark"/>
+    app:ci_borderWidth="3dp"
+    app:ci_borderColor="@android:color/holo_blue_dark"/>
 ````
 
 **#4 Placeholder text with custom border & background**
@@ -149,11 +149,17 @@ Placeholder text is shown along with custom border & background when no bitmap i
     android:id="@+id/image5"
     android:layout_width="100dp"
     android:layout_height="100dp"
-    app:placeholderBackgroundColor="@android:color/holo_orange_light"
-    app:placeholderTextSize="42sp"
-    app:placeholderTextColor="#FFF"
-    app:placeholderText="CV"/>
+    app:ci_placeholderBackgroundColor="@android:color/holo_orange_light"
+    app:ci_placeholderTextSize="42sp"
+    app:ci_placeholderTextColor="#FFF"
+    app:ci_placeholderText="CV"/>
 ````
+
+## Changelog
+
+#### 1.0.1
+
+* Renamed all custom attributes to suffix `ci_` to avoid conflicts
 
 ## Limitations & known issues
 

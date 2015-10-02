@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="CircularImageView">
-        <attr name="borderColor" format="color" />
-        <attr name="borderWidth" format="dimension" />
-        <attr name="placeholderBackgroundColor" format="color" />
-        <attr name="placeholderText" format="string" />
-        <attr name="placeholderTextColor" format="color" />
-        <attr name="placeholderTextSize" format="dimension" />
+        <attr name="ci_borderColor" format="color" />
+        <attr name="ci_borderWidth" format="dimension" />
+        <attr name="ci_placeholderBackgroundColor" format="color" />
+        <attr name="ci_placeholderText" format="string" />
+        <attr name="ci_placeholderTextColor" format="color" />
+        <attr name="ci_placeholderTextSize" format="dimension" />
     </declare-styleable>
 </resources>

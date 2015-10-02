@@ -22,10 +22,10 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_margin="10dp"
-        app:placeholderBackgroundColor="@android:color/holo_orange_light"
-        app:placeholderTextSize="42sp"
-        app:placeholderTextColor="#FFF"
-        app:placeholderText="CV" />
+        app:ci_placeholderBackgroundColor="@android:color/holo_orange_light"
+        app:ci_placeholderTextSize="42sp"
+        app:ci_placeholderTextColor="#FFF"
+        app:ci_placeholderText="CV" />
 
     <com.subinkrishna.widget.CircularImageView
         android:id="@+id/image3"
@@ -33,17 +33,17 @@
         android:layout_height="100dp"
         android:layout_margin="10dp"
         android:src="@drawable/c1"
-        app:borderWidth="3dp"
-        app:borderColor="@android:color/holo_blue_dark"/>
+        app:ci_borderWidth="3dp"
+        app:ci_borderColor="@android:color/holo_blue_dark"/>
 
     <com.subinkrishna.widget.CircularImageView
         android:id="@+id/image5"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_margin="10dp"
-        app:placeholderBackgroundColor="@android:color/holo_orange_light"
-        app:placeholderTextSize="42sp"
-        app:placeholderTextColor="#FFF"
-        app:placeholderText="CV"/>
+        app:ci_placeholderBackgroundColor="@android:color/holo_orange_light"
+        app:ci_placeholderTextSize="42sp"
+        app:ci_placeholderTextColor="#FFF"
+        app:ci_placeholderText="CV"/>
 
 </LinearLayout>

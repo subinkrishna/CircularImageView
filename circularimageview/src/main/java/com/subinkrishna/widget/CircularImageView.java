@@ -94,15 +94,15 @@ public class CircularImageView extends ImageView {
         mBackgroundColor = DEFAULT_BACKGROUND_COLOR;
 
         if (null != t) {
-            mBorderWidth = t.getDimensionPixelSize(R.styleable.CircularImageView_borderWidth, 0);
-            mBorderColor = t.getColor(R.styleable.CircularImageView_borderColor,
+            mBorderWidth = t.getDimensionPixelSize(R.styleable.CircularImageView_ci_borderWidth, 0);
+            mBorderColor = t.getColor(R.styleable.CircularImageView_ci_borderColor,
                     DEFAULT_BORDER_COLOR);
-            mBackgroundColor = t.getColor(R.styleable.CircularImageView_placeholderBackgroundColor,
+            mBackgroundColor = t.getColor(R.styleable.CircularImageView_ci_placeholderBackgroundColor,
                     DEFAULT_BACKGROUND_COLOR);
-            mText = t.getString(R.styleable.CircularImageView_placeholderText);
-            mTextColor = t.getColor(R.styleable.CircularImageView_placeholderTextColor,
+            mText = t.getString(R.styleable.CircularImageView_ci_placeholderText);
+            mTextColor = t.getColor(R.styleable.CircularImageView_ci_placeholderTextColor,
                     DEFAULT_TEXT_COLOR);
-            mTextSize = t.getDimensionPixelSize(R.styleable.CircularImageView_placeholderTextSize, 0);
+            mTextSize = t.getDimensionPixelSize(R.styleable.CircularImageView_ci_placeholderTextSize, 0);
 
             t.recycle();
         }
