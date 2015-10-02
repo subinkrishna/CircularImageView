@@ -57,12 +57,12 @@ imageView.setPlaceholderTextSize(TypedValue.COMPLEX_UNIT_SP, 22);
 
 **Custom Attributes**
 
-* `borderWidth` (default: `0`)
-* `borderColor` (default: `#FFFFFFFF`)
-* `placeholderText`
-* `placeholderTextSize` (default: `0`)
-* `placeholderTextColor` (default: `#FF000000`)
-* `placeholderBackgroundColor` (default: `#FFDDDDDD`)
+* `ci_borderWidth` (default: `0`)
+* `ci_borderColor` (default: `#FFFFFFFF`)
+* `ci_placeholderText`
+* `ci_placeholderTextSize` (default: `0`)
+* `ci_placeholderTextColor` (default: `#FF000000`)
+* `ci_placeholderBackgroundColor` (default: `#FFDDDDDD`)
 
 **Java Methods**
 
