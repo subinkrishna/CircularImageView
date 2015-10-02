@@ -22,7 +22,7 @@ Or Maven:
 <dependency>
   <groupId>com.subinkrishna</groupId>
   <artifactId>circularimageview</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.1</version>
 </dependency>
 ````
 
