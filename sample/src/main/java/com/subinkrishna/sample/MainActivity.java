@@ -1,5 +1,6 @@
 package com.subinkrishna.sample;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
                 .into(i2);
 
         final CircularImageView i4 = (CircularImageView) findViewById(R.id.image5);
+        i4.setCheckedStateBackgroundColor(Color.GRAY);
         i4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -8,6 +8,6 @@
         <attr name="ci_placeholderTextColor" format="color" />
         <attr name="ci_placeholderTextSize" format="dimension" />
         <attr name="ci_checked" format="boolean" />
-        <attr name="ci_checkedBackgroundColor" format="color" />
+        <attr name="ci_checkedStateBackgroundColor" format="color" />
     </declare-styleable>
 </resources>

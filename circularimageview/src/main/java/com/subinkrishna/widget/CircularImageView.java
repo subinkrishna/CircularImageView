@@ -121,7 +121,7 @@ public class CircularImageView
             mTextSize = t.getDimensionPixelSize(R.styleable.CircularImageView_ci_placeholderTextSize, 0);
 
             mChecked = t.getBoolean(R.styleable.CircularImageView_ci_checked, false);
-            mCheckedBackgroundColor = t.getColor(R.styleable.CircularImageView_ci_checkedBackgroundColor,
+            mCheckedBackgroundColor = t.getColor(R.styleable.CircularImageView_ci_checkedStateBackgroundColor,
                     DEFAULT_CHECKED_BACKGROUND_COLOR);
 
             t.recycle();
@@ -291,6 +291,23 @@ public class CircularImageView
     }
 
     /**
+     * Sets the check state background color.
+     *
+     * @param backgroundColor
+     */
+    public final void setCheckedStateBackgroundColor(@ColorInt int backgroundColor) {
+        if ((backgroundColor != mCheckedBackgroundColor) &&
+            (null != mCheckedBackgroundPaint)) {
+            mCheckedBackgroundPaint.setColor(backgroundColor);
+            if (isChecked()) {
+                invalidate();
+            }
+        }
+
+        mCheckedBackgroundColor = backgroundColor;
+    }
+
+    /**
      * Sets the placeholder text.
      *
      * @param text
@@ -432,8 +449,10 @@ public class CircularImageView
         mPath.moveTo(sx + (mCheckStrokeWidth * .5f), sy + halfH);
         mPath.lineTo(sx - shortStrokeHeight, sy + halfH); // draw short stroke
 
+        // Rotates the canvas to draw an angled check mark
         canvas.rotate(45f, x, y);
         canvas.drawPath(mPath, mCheckMarkPaint);
+        // Restore the canvas to previously saved state
         canvas.restore();
     }
 
