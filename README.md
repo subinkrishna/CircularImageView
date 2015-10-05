@@ -8,7 +8,7 @@ A checkable Android ImageView implementation that draws circular images with sup
 
 Download the latest version from [releases][1].
 
-Or get it using Gradle:
+Or get it using **Gradle:**
 
 ````groovy
 dependencies {
@@ -16,7 +16,7 @@ dependencies {
 }
 ````
 
-Or Maven:
+Or **Maven:**
 
 ````xml
 <dependency>
