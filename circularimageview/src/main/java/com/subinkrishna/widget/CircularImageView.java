@@ -55,8 +55,8 @@ public class CircularImageView
     /** Default colors */
     private static final int DEFAULT_BORDER_COLOR = 0xFFFFFFFF;
     private static final int DEFAULT_BACKGROUND_COLOR = 0xFFDDDDDD;
-    private static final int DEFAULT_CHECKED_BACKGROUND_COLOR = 0xFFBBBBBB;
     private static final int DEFAULT_TEXT_COLOR = 0xFF000000;
+    private static final int DEFAULT_CHECKED_BACKGROUND_COLOR = 0xFFBBBBBB;
     private static final int DEFAULT_CHECK_STROKE_COLOR = 0xFFFFFFFF;
 
     private static final float DEFAULT_CHECK_STROKE_WIDTH_IN_DP = 3f;

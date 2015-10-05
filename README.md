@@ -1,6 +1,6 @@
 CircularImageView
 ====
-Android ImageView implementation that draws circular images with support for optional placeholder text. CircularTextView works with [Picasso][picasso] (tested with picasso:2.5.2) & [Glide][glide] (tested with glide:3.6.1).
+A checkable Android ImageView implementation that draws circular images with support for optional placeholder text. CircularTextView works with [Picasso][picasso] (tested with picasso:2.5.2) & [Glide][glide] (tested with glide:3.6.1).
 
 ![Cat](art/cat.png)
 
@@ -12,7 +12,7 @@ Or get it using Gradle:
 
 ````groovy
 dependencies {
-    compile 'com.subinkrishna:circularimageview:1.0.1'
+    compile 'com.subinkrishna:circularimageview:1.0.2'
 }
 ````
 
@@ -22,7 +22,7 @@ Or Maven:
 <dependency>
   <groupId>com.subinkrishna</groupId>
   <artifactId>circularimageview</artifactId>
-  <version>1.0.1</version>
+  <version>1.0.2</version>
 </dependency>
 ````
 
@@ -63,6 +63,8 @@ imageView.setPlaceholderTextSize(TypedValue.COMPLEX_UNIT_SP, 22);
 * `ci_placeholderTextSize` (default: `0`)
 * `ci_placeholderTextColor` (default: `#FF000000`)
 * `ci_placeholderBackgroundColor` (default: `#FFDDDDDD`)
+* `ci_checked` (default: `false`)
+* `ci_checkedStateBackgroundColor` (default: `#FFBBBBBB`)
 
 **Java Methods**
 
@@ -71,6 +73,13 @@ imageView.setPlaceholderTextSize(TypedValue.COMPLEX_UNIT_SP, 22);
 * `setPlaceholder(String text)`
 * `setPlaceholder(String text, @ColorInt int backgroundColor, @ColorInt int textColor)`
 * `setPlaceholderTextSize(int unit, int size)`
+* `setCheckedStateBackgroundColor(@ColorInt int backgroundColor)`
+
+Methods implemented from `android.widget.Checkable`
+
+* `isChecked()`
+* `setChecked(boolean checked)`
+* `toggle()`
 
 ## Samples
 
@@ -156,6 +165,10 @@ Placeholder text is shown along with custom border & background when no bitmap i
 ````
 
 ## Changelog
+
+#### 1.0.2
+
+* `CircularImageView` implements `android.widget.Checkable`
 
 #### 1.0.1
 
