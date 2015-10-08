@@ -1,49 +1,39 @@
 package com.subinkrishna.sample;
 
-import android.graphics.Color;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Shader;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageView;
-
-import com.bumptech.glide.Glide;
-import com.squareup.picasso.Picasso;
-import com.subinkrishna.widget.CircularImageView;
 
 public class MainActivity extends AppCompatActivity {
 
+    /** Log tag */
+    private static final String TAG = MainActivity.class.getSimpleName();
+
+    private Toolbar mToolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Reset to default theme once the Activity is "cold started"
+        setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Picasso
-        ImageView i1 = (ImageView) findViewById(R.id.image1);
-        Picasso.with(this)
-                .load("https://raw.githubusercontent.com/subinkrishna/CircularImageView/master/art/cat_original.jpg")
-                .placeholder(R.drawable.placeholder)
-                .centerCrop()
-                .resize(200, 200)
-                .into(i1);
+        /*
+        TextView title = (TextView) findViewById(R.id.toolbar_title);
+        Typeface mono = Typeface.createFromAsset(getAssets(), "fonts/roboto/Mono-Regular.ttf");
+        title.setTypeface(mono);
+        */
 
-        // Glide
-        ImageView i2 = (ImageView) findViewById(R.id.image2);
-        Glide.with(this)
-                .load("http://invalid.url")
-                .asBitmap()
-                .error(R.drawable.placeholder)
-                .into(i2);
-
-        final CircularImageView i4 = (CircularImageView) findViewById(R.id.image5);
-        i4.setCheckedStateBackgroundColor(Color.GRAY);
-        i4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                i4.toggle();
-            }
-        });
+        setToolbar();
+        setImageContainerBackground();
     }
 
     @Override
@@ -67,4 +57,25 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    private void setImageContainerBackground() {
+        Resources res = getResources();
+        Bitmap b = BitmapFactory.decodeResource(getResources(), R.drawable.grid);
+        int cellH = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 22, res.getDisplayMetrics());
+        b = Bitmap.createScaledBitmap(b, cellH, cellH, true);
+
+        BitmapDrawable bd = new BitmapDrawable(res, b);
+        bd.setTileModeX(Shader.TileMode.REPEAT);
+        bd.setTileModeY(Shader.TileMode.REPEAT);
+        findViewById(R.id.image_container).setBackgroundDrawable(bd);
+    }
+
+    private void setToolbar() {
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        if (null != mToolbar) {
+            setSupportActionBar(mToolbar);
+            getSupportActionBar().setTitle("");
+        }
+    }
+
 }
