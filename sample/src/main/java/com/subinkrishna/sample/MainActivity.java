@@ -11,6 +11,9 @@ import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+
+import com.subinkrishna.widget.CircularImageView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,6 +37,13 @@ public class MainActivity extends AppCompatActivity {
 
         setToolbar();
         setImageContainerBackground();
+
+        findViewById(R.id.civ).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((CircularImageView)v).toggle();
+            }
+        });
     }
 
     @Override

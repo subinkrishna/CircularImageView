@@ -65,8 +65,9 @@
         android:layout_height="match_parent">
 
         <com.subinkrishna.widget.CircularImageView
-            android:layout_width="150dp"
-            android:layout_height="150dp"
+            android:id="@+id/civ"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
             app:ci_placeholderText="cv"
             app:ci_placeholderTextColor="@android:color/white"
             app:ci_placeholderBackgroundColor="@android:color/holo_blue_dark"
