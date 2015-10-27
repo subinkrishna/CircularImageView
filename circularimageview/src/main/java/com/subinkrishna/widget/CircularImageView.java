@@ -16,6 +16,9 @@
 
 package com.subinkrishna.widget;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
@@ -35,6 +38,8 @@ import android.support.annotation.ColorInt;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.TypedValue;
+import android.view.animation.DecelerateInterpolator;
+import android.view.animation.Interpolator;
 import android.widget.Checkable;
 import android.widget.ImageView;
 
@@ -496,8 +501,26 @@ public class CircularImageView
 
     @Override
     public void setChecked(boolean checked) {
-        mChecked = checked;
-        invalidate();
+        // TODO: Block changing checked state until animations complete
+        // TODO: Optimizations
+        // TODO: Add configurations to enable animations, duration (?), stroke color & width
+        final int duration = 100;
+        final Interpolator interpolator = new DecelerateInterpolator();
+        ObjectAnimator animation = ObjectAnimator.ofFloat(this, "scaleX", 1f, 0f);
+        animation.setDuration(duration);
+        animation.setInterpolator(interpolator);
+        animation.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                mChecked = !mChecked;
+                invalidate();
+                ObjectAnimator reverse = ObjectAnimator.ofFloat(CircularImageView.this, "scaleX", 0f, 1f);
+                reverse.setDuration(duration);
+                reverse.setInterpolator(interpolator);
+                reverse.start();
+            }
+        });
+        animation.start();
     }
 
     @Override
