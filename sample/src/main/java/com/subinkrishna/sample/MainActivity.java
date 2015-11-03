@@ -1,17 +1,31 @@
 package com.subinkrishna.sample;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Shader;
+import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewAnimationUtils;
+import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
+import android.widget.TextView;
 
 import com.subinkrishna.widget.CircularImageView;
 
@@ -21,6 +35,9 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
 
     private Toolbar mToolbar;
+    private TextView mCodeTextView;
+    private ViewGroup mImageContainer, mCodeContainer;
+    private boolean mIsAnimating = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,11 +46,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        /*
+        mImageContainer = (ViewGroup) findViewById(R.id.image_container);
+        mCodeContainer = (ViewGroup) findViewById(R.id.code_container);
+
+        // Set custom typeface to TextViews
         TextView title = (TextView) findViewById(R.id.toolbar_title);
+        mCodeTextView = (TextView) findViewById(R.id.code);
         Typeface mono = Typeface.createFromAsset(getAssets(), "fonts/roboto/Mono-Regular.ttf");
         title.setTypeface(mono);
-        */
+        mCodeTextView.setTypeface(mono);
 
         setToolbar();
         setImageContainerBackground();
@@ -41,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.civ).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((CircularImageView)v).toggle();
+                ((CircularImageView) v).toggle();
             }
         });
     }
@@ -60,12 +81,88 @@ public class MainActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                return true;
+            case R.id.action_code:
+                if (!mIsAnimating) toggleCode();
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @SuppressLint("NewApi")
+    private void toggleCode() {
+        final boolean isCodeVisible = mCodeContainer.getVisibility() == View.VISIBLE;
+        int w = mImageContainer.getWidth(),
+            h = mImageContainer.getHeight();
+
+        mIsAnimating = true;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            // Reveal only for SDK version 21 or above
+            float startRadius = isCodeVisible ? (float) w * 1.3f : 0;
+            float endRadius = isCodeVisible ? 0 : (float) w * 1.3f;
+            Animator anim = ViewAnimationUtils.createCircularReveal(mCodeContainer,
+                    w, 0, startRadius, endRadius);
+
+            anim.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    super.onAnimationEnd(animation);
+                    if (isCodeVisible) {
+                        mCodeContainer.setVisibility(View.GONE);
+                    }
+                    mIsAnimating = false;
+                }
+            });
+
+            if (!isCodeVisible) {
+                mCodeContainer.setVisibility(View.VISIBLE);
+            }
+
+            anim.start();
+        } else {
+            // Else slide
+            if (!isCodeVisible) {
+                mCodeContainer.setTranslationY(h);
+                mCodeContainer.setVisibility(View.VISIBLE);
+            }
+
+            int startY = isCodeVisible ? 0 : h;
+            int endY = isCodeVisible ? h : 0;
+            ObjectAnimator anim = ObjectAnimator.ofFloat(mCodeContainer, "translationY", startY, endY);
+            anim.setInterpolator(new DecelerateInterpolator());
+            anim.setDuration(getResources().getInteger(android.R.integer.config_mediumAnimTime));
+
+            anim.addListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animation) {
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    if (isCodeVisible) {
+                        mCodeContainer.setVisibility(View.GONE);
+                    }
+                    mIsAnimating = false;
+                }
+
+                @Override
+                public void onAnimationCancel(Animator animation) {
+
+                }
+
+                @Override
+                public void onAnimationRepeat(Animator animation) {
+
+                }
+            });
+
+            anim.start();
+        }
     }
 
     private void setImageContainerBackground() {

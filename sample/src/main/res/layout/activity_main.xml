@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
-        android:layout_height="?attr/actionBarSize"
         android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
         android:background="@color/bg_app"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:theme="@style/ThemeOverlay.AppCompat.ActionBar">
@@ -18,18 +19,18 @@
             android:layout_height="match_parent"
             android:gravity="center_vertical"
             android:singleLine="true"
-            android:textSize="15sp"
-            android:textStyle="bold"
+            android:text="@string/app_name"
             android:textColor="#666666"
-            android:text="@string/app_name"/>
+            android:textSize="15sp"
+            android:textStyle="bold" />
 
     </android.support.v7.widget.Toolbar>
 
     <HorizontalScrollView
         android:id="@+id/source_selector_container"
-        android:layout_below="@id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar"
         android:fadingEdge="none">
 
         <LinearLayout
@@ -50,7 +51,8 @@
                 android:scaleType="centerCrop"
                 android:src="@drawable/c2" />
 
-            <include layout="@layout/item_compound_image_view"
+            <include
+                layout="@layout/item_compound_image_view"
                 android:layout_width="@dimen/image_icon_size"
                 android:layout_height="@dimen/image_icon_size" />
 
@@ -60,19 +62,39 @@
 
     <RelativeLayout
         android:id="@+id/image_container"
-        android:layout_below="@id/source_selector_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_below="@id/source_selector_container">
 
         <com.subinkrishna.widget.CircularImageView
             android:id="@+id/civ"
             android:layout_width="120dp"
             android:layout_height="120dp"
+            android:layout_centerInParent="true"
+            app:ci_placeholderBackgroundColor="@android:color/holo_blue_dark"
             app:ci_placeholderText="cv"
             app:ci_placeholderTextColor="@android:color/white"
-            app:ci_placeholderBackgroundColor="@android:color/holo_blue_dark"
-            app:ci_placeholderTextSize="55sp"
-            android:layout_centerInParent="true"/>
+            app:ci_placeholderTextSize="55sp" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/code_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/source_selector_container"
+        android:background="#78909C"
+        android:clickable="true"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <TextView
+            android:id="@+id/code"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:text="sample code"
+            android:textColor="@android:color/white" />
 
     </RelativeLayout>
 

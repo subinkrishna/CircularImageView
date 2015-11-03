@@ -501,10 +501,8 @@ public class CircularImageView
 
     @Override
     public void setChecked(boolean checked) {
-        // TODO: Block changing checked state until animations complete
-        // TODO: Optimizations
         // TODO: Add configurations to enable animations, duration (?), stroke color & width
-        final int duration = 100;
+        final int duration = 150;
         final Interpolator interpolator = new DecelerateInterpolator();
         ObjectAnimator animation = ObjectAnimator.ofFloat(this, "scaleX", 1f, 0f);
         animation.setDuration(duration);
