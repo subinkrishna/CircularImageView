@@ -29,31 +29,33 @@ import android.widget.TextView;
 
 import com.subinkrishna.widget.CircularImageView;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 public class MainActivity extends AppCompatActivity {
 
     /** Log tag */
     private static final String TAG = MainActivity.class.getSimpleName();
 
-    private Toolbar mToolbar;
-    private TextView mCodeTextView;
-    private ViewGroup mImageContainer, mCodeContainer;
+    @Bind(R.id.toolbar) Toolbar mToolbar;
+    @Bind(R.id.toolbar_title) TextView mTitleTextView;
+    @Bind(R.id.code_container) ViewGroup mCodeContainer;
+    @Bind(R.id.code) TextView mCodeTextView;
+    @Bind(R.id.image_container) ViewGroup mImageContainer;
+
     private boolean mIsAnimating = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // Reset to default theme once the Activity is "cold started"
         setTheme(R.style.AppTheme);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
 
-        mImageContainer = (ViewGroup) findViewById(R.id.image_container);
-        mCodeContainer = (ViewGroup) findViewById(R.id.code_container);
-
-        // Set custom typeface to TextViews
-        TextView title = (TextView) findViewById(R.id.toolbar_title);
-        mCodeTextView = (TextView) findViewById(R.id.code);
         Typeface mono = Typeface.createFromAsset(getAssets(), "fonts/roboto/Mono-Regular.ttf");
-        title.setTypeface(mono);
+        mTitleTextView.setTypeface(mono);
         mCodeTextView.setTypeface(mono);
 
         setToolbar();
@@ -69,18 +71,12 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
         switch (item.getItemId()) {
             case R.id.action_settings:
                 return true;
@@ -136,28 +132,13 @@ public class MainActivity extends AppCompatActivity {
             anim.setInterpolator(new DecelerateInterpolator());
             anim.setDuration(getResources().getInteger(android.R.integer.config_mediumAnimTime));
 
-            anim.addListener(new Animator.AnimatorListener() {
-                @Override
-                public void onAnimationStart(Animator animation) {
-
-                }
-
+            anim.addListener(new AnimatorListenerStub() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
                     if (isCodeVisible) {
                         mCodeContainer.setVisibility(View.GONE);
                     }
                     mIsAnimating = false;
-                }
-
-                @Override
-                public void onAnimationCancel(Animator animation) {
-
-                }
-
-                @Override
-                public void onAnimationRepeat(Animator animation) {
-
                 }
             });
 
@@ -167,18 +148,17 @@ public class MainActivity extends AppCompatActivity {
 
     private void setImageContainerBackground() {
         Resources res = getResources();
-        Bitmap b = BitmapFactory.decodeResource(getResources(), R.drawable.grid);
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.grid);
         int cellH = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 22, res.getDisplayMetrics());
-        b = Bitmap.createScaledBitmap(b, cellH, cellH, true);
+        bitmap = Bitmap.createScaledBitmap(bitmap, cellH, cellH, true);
 
-        BitmapDrawable bd = new BitmapDrawable(res, b);
-        bd.setTileModeX(Shader.TileMode.REPEAT);
-        bd.setTileModeY(Shader.TileMode.REPEAT);
-        findViewById(R.id.image_container).setBackgroundDrawable(bd);
+        BitmapDrawable bitmapDrawable = new BitmapDrawable(res, bitmap);
+        bitmapDrawable.setTileModeX(Shader.TileMode.REPEAT);
+        bitmapDrawable.setTileModeY(Shader.TileMode.REPEAT);
+        mImageContainer.setBackgroundDrawable(bitmapDrawable);
     }
 
     private void setToolbar() {
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
         if (null != mToolbar) {
             setSupportActionBar(mToolbar);
             getSupportActionBar().setTitle("");

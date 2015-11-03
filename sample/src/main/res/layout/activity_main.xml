@@ -86,7 +86,7 @@
         android:background="#78909C"
         android:clickable="true"
         android:visibility="gone"
-        tools:visibility="visible">
+        tools:visibility="gone">
 
         <TextView
             android:id="@+id/code"
