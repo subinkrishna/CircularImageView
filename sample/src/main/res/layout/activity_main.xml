@@ -26,6 +26,7 @@
 
     </android.support.v7.widget.Toolbar>
 
+    <!-- This is lazy me NOT using a RecyclerView -->
     <HorizontalScrollView
         android:id="@+id/source_selector_container"
         android:layout_width="match_parent"
@@ -35,24 +36,27 @@
 
         <LinearLayout
             android:id="@+id/source_selector"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <ImageView
+            <com.subinkrishna.sample.view.CompoundImageView
+                android:id="@+id/thumbnail_1"
                 android:layout_width="@dimen/image_icon_size"
-                android:layout_height="@dimen/image_icon_size"
-                android:scaleType="centerCrop"
-                android:src="@drawable/c1" />
+                android:layout_height="@dimen/image_icon_size" />
 
-            <ImageView
+            <com.subinkrishna.sample.view.CompoundImageView
+                android:id="@+id/thumbnail_2"
                 android:layout_width="@dimen/image_icon_size"
-                android:layout_height="@dimen/image_icon_size"
-                android:scaleType="centerCrop"
-                android:src="@drawable/c2" />
+                android:layout_height="@dimen/image_icon_size" />
 
-            <include
-                layout="@layout/item_compound_image_view"
+            <com.subinkrishna.sample.view.CompoundImageView
+                android:id="@+id/thumbnail_from_cloud"
+                android:layout_width="@dimen/image_icon_size"
+                android:layout_height="@dimen/image_icon_size" />
+
+            <com.subinkrishna.sample.view.CompoundImageView
+                android:id="@+id/thumbnail_no_image"
                 android:layout_width="@dimen/image_icon_size"
                 android:layout_height="@dimen/image_icon_size" />
 
@@ -68,10 +72,12 @@
 
         <com.subinkrishna.widget.CircularImageView
             android:id="@+id/civ"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
+            android:layout_width="@dimen/civ_size"
+            android:layout_height="@dimen/civ_size"
             android:layout_centerInParent="true"
-            app:ci_placeholderBackgroundColor="@android:color/holo_blue_dark"
+            app:ci_borderColor="#999"
+            app:ci_borderWidth="5dp"
+            app:ci_placeholderBackgroundColor="#999"
             app:ci_placeholderText="cv"
             app:ci_placeholderTextColor="@android:color/white"
             app:ci_placeholderTextSize="55sp" />
