@@ -67,7 +67,7 @@ public class MainActivity
         ButterKnife.bind(this);
 
         Typeface mono = Typeface.createFromAsset(getAssets(), "fonts/roboto/Mono-Regular.ttf");
-        //mTitleTextView.setTypeface(mono);
+        mTitleTextView.setTypeface(mono);
         mCodeTextView.setTypeface(mono);
 
         // Init Picasso

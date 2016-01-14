@@ -12,7 +12,7 @@ Or get it using **Gradle:**
 
 ````groovy
 dependencies {
-    compile 'com.subinkrishna:circularimageview:1.0.2'
+    compile 'com.subinkrishna:circularimageview:1.1.0'
 }
 ````
 
@@ -22,7 +22,7 @@ Or **Maven:**
 <dependency>
   <groupId>com.subinkrishna</groupId>
   <artifactId>circularimageview</artifactId>
-  <version>1.0.2</version>
+  <version>1.1.0</version>
 </dependency>
 ````
 
@@ -74,6 +74,8 @@ imageView.setPlaceholderTextSize(TypedValue.COMPLEX_UNIT_SP, 22);
 * `setPlaceholder(String text, @ColorInt int backgroundColor, @ColorInt int textColor)`
 * `setPlaceholderTextSize(int unit, int size)`
 * `setCheckedStateBackgroundColor(@ColorInt int backgroundColor)`
+* `setImageAlpha(int alpha)`
+* `allowCheckStateAnimation(boolean allowAnimation)`
 
 Methods implemented from `android.widget.Checkable`
 
@@ -165,6 +167,13 @@ Placeholder text is shown along with custom border & background when no bitmap i
 ````
 
 ## Changelog
+
+#### 1.1.0
+
+* Added support for alpha (`setImageAlpha(int alpha)` & `getImageAlpha()`)
+* Added support to enable/disable check state change animation
+* Added support to override check mark style, runtime border visibility
+* Bug fixes
 
 #### 1.0.2
 
