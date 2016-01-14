@@ -1,50 +1,113 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:background="#EEE"
-    android:orientation="vertical"
-    tools:context=".MainActivity">
+    android:layout_height="match_parent">
 
-    <com.subinkrishna.widget.CircularImageView
-        android:id="@+id/image1"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_margin="10dp" />
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/bg_app"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:theme="@style/ThemeOverlay.AppCompat.ActionBar">
 
-    <com.subinkrishna.widget.CircularImageView
-        android:id="@+id/image2"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_margin="10dp"
-        app:ci_placeholderBackgroundColor="@android:color/holo_orange_light"
-        app:ci_placeholderTextSize="42sp"
-        app:ci_placeholderTextColor="#FFF"
-        app:ci_placeholderText="CV" />
+        <TextView
+            android:id="@+id/toolbar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:singleLine="true"
+            android:text="@string/app_name"
+            android:textColor="#666666"
+            android:textSize="15sp"
+            android:textStyle="bold" />
 
-    <com.subinkrishna.widget.CircularImageView
-        android:id="@+id/image3"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_margin="10dp"
-        android:src="@drawable/c1"
-        app:ci_borderWidth="3dp"
-        app:ci_borderColor="@android:color/holo_blue_dark"/>
+    </android.support.v7.widget.Toolbar>
 
-    <com.subinkrishna.widget.CircularImageView
-        android:id="@+id/image5"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_margin="10dp"
-        app:ci_placeholderBackgroundColor="@android:color/holo_orange_light"
-        app:ci_placeholderTextSize="24sp"
-        app:ci_placeholderTextColor="#FFF"
-        app:ci_placeholderText="CV"
-        app:ci_checked="true"/>
+    <!-- This is lazy me NOT using a RecyclerView -->
+    <HorizontalScrollView
+        android:id="@+id/source_selector_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar"
+        android:fadingEdge="none">
 
-</LinearLayout>
+        <LinearLayout
+            android:id="@+id/source_selector"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.subinkrishna.sample.view.CompoundImageView
+                android:id="@+id/thumbnail_1"
+                android:layout_width="@dimen/image_icon_size"
+                android:layout_height="@dimen/image_icon_size" />
+
+            <com.subinkrishna.sample.view.CompoundImageView
+                android:id="@+id/thumbnail_2"
+                android:layout_width="@dimen/image_icon_size"
+                android:layout_height="@dimen/image_icon_size" />
+
+            <com.subinkrishna.sample.view.CompoundImageView
+                android:id="@+id/thumbnail_from_cloud"
+                android:layout_width="@dimen/image_icon_size"
+                android:layout_height="@dimen/image_icon_size" />
+
+            <com.subinkrishna.sample.view.CompoundImageView
+                android:id="@+id/thumbnail_no_image"
+                android:layout_width="@dimen/image_icon_size"
+                android:layout_height="@dimen/image_icon_size" />
+
+        </LinearLayout>
+
+    </HorizontalScrollView>
+
+    <RelativeLayout
+        android:id="@+id/image_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/source_selector_container">
+
+        <com.subinkrishna.widget.CircularImageView
+            android:id="@+id/civ"
+            android:layout_width="@dimen/civ_size"
+            android:layout_height="@dimen/civ_size"
+            android:layout_centerInParent="true"
+            app:ci_borderColor="#999"
+            app:ci_borderWidth="5dp"
+            app:ci_placeholderBackgroundColor="#999"
+            app:ci_placeholderText="cv"
+            app:ci_placeholderTextColor="@android:color/white"
+            app:ci_placeholderTextSize="55sp" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/code_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/source_selector_container"
+        android:background="#78909C"
+        android:clickable="true"
+        android:visibility="gone"
+        tools:visibility="gone">
+
+        <TextView
+            android:id="@+id/code"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:text="sample code"
+            android:textColor="@android:color/white" />
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:layout_below="@id/source_selector_container"
+        android:background="@drawable/shadow_gradient_bottom" />
+
+</RelativeLayout>
