@@ -409,12 +409,13 @@ public class CircularImageView
             drawCheckedState(canvas, mWidth, mHeight);
         }
         else {
+            int offset = mBorderWidth > 0 ? 1 : 0;
             if (null != getDrawable()) {
                 // Draws the bitmap if available
-                canvas.drawCircle(x, y, mRadius - mBorderWidth, mBitmapPaint);
+                canvas.drawCircle(x, y, mRadius - offset, mBitmapPaint);
             } else {
                 // Placeholder background
-                canvas.drawCircle(x, y, mRadius - mBorderWidth, mBackgroundPaint);
+                canvas.drawCircle(x, y, mRadius - offset, mBackgroundPaint);
                 // Placeholder character
                 if ((null != mTextPaint) && !TextUtils.isEmpty(mText)) {
                     int ty = (int) ((mHeight - (mTextPaint.ascent() + mTextPaint.descent())) * 0.5f);
@@ -499,9 +500,13 @@ public class CircularImageView
         mBitmapPaint.setShader(shader);
     }
 
+    // Checkable
+
     @Override
-    public void setChecked(boolean checked) {
-        // TODO: Add configurations to enable animations, duration (?), stroke color & width
+    public void setChecked(final boolean checked) {
+        if (mChecked == checked)
+            return;
+
         final int duration = 150;
         final Interpolator interpolator = new DecelerateInterpolator();
         ObjectAnimator animation = ObjectAnimator.ofFloat(this, "scaleX", 1f, 0f);
@@ -510,7 +515,7 @@ public class CircularImageView
         animation.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
-                mChecked = !mChecked;
+                mChecked = checked;
                 invalidate();
                 ObjectAnimator reverse = ObjectAnimator.ofFloat(CircularImageView.this, "scaleX", 0f, 1f);
                 reverse.setDuration(duration);
