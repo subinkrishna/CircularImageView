@@ -64,6 +64,7 @@ public class CircularImageView
     private static final int DEFAULT_CHECKED_BACKGROUND_COLOR = 0xFFBBBBBB;
     private static final int DEFAULT_CHECK_STROKE_COLOR = 0xFFFFFFFF;
 
+    /** Default dimensions */
     private static final float DEFAULT_CHECK_STROKE_WIDTH_IN_DP = 3f;
 
     private Paint mBitmapPaint;
@@ -73,7 +74,7 @@ public class CircularImageView
     private Paint mCheckedBackgroundPaint;
     private Paint mTextPaint;
     private int mWidth, mHeight, mRadius;
-    private int mCheckStrokeWidth, mLongStrokeHeight;
+    private int mLongStrokeHeight;
     private Path mPath = new Path();
 
     // Configurations
@@ -82,9 +83,11 @@ public class CircularImageView
     private int mBackgroundColor;
     private int mCheckedBackgroundColor;
     private int mTextColor;
+    private int mAlpha = 0xFF;
     private String mText;
     private int mTextSize;
     private boolean mChecked;
+    private boolean mAllowCheckStateAnimation = true;
 
     public CircularImageView(Context context) {
         super(context);
@@ -147,13 +150,7 @@ public class CircularImageView
         mCheckedBackgroundPaint.setColor(mCheckedBackgroundColor);
         mCheckedBackgroundPaint.setStyle(Paint.Style.FILL);
 
-        mCheckStrokeWidth = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, DEFAULT_CHECK_STROKE_WIDTH_IN_DP,
-                getResources().getDisplayMetrics());
-
-        mCheckMarkPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mCheckMarkPaint.setColor(DEFAULT_CHECK_STROKE_COLOR);
-        mCheckMarkPaint.setStyle(Paint.Style.STROKE);
-        mCheckMarkPaint.setStrokeWidth(mCheckStrokeWidth);
+        mCheckMarkPaint = getCheckMarkPaint();
     }
 
     /**
@@ -268,6 +265,24 @@ public class CircularImageView
         }
     }
 
+    public void setImageAlpha(int alpha) {
+        alpha &= 0xFF;
+        if (mAlpha != alpha) {
+            mAlpha = alpha;
+            if (null != mBitmapPaint) mBitmapPaint.setAlpha(alpha);
+            if (null != mBorderPaint) mBorderPaint.setAlpha(alpha);
+            if (null != mBackgroundPaint) mBackgroundPaint.setAlpha(alpha);
+            if (null != mCheckMarkPaint) mCheckMarkPaint.setAlpha(alpha);
+            if (null != mCheckedBackgroundPaint) mCheckedBackgroundPaint.setAlpha(alpha);
+            if (null != mTextPaint) mTextPaint.setAlpha(alpha);
+            invalidate();
+        }
+    }
+
+    public int getImageAlpha() {
+        return mAlpha;
+    }
+
     /**
      * Sets the border width.
      *
@@ -291,7 +306,7 @@ public class CircularImageView
      */
     public final void setBorderColor(@ColorInt int color) {
         if (color != mBorderColor) {
-            setBorderInternal(mWidth, color, true);
+            setBorderInternal(mBorderWidth, color, true);
         }
     }
 
@@ -372,6 +387,15 @@ public class CircularImageView
     }
 
     /**
+     * Allows check state animation if set to true.
+     *
+     * @param allowAnimation
+     */
+    public final void allowCheckStateAnimation(boolean allowAnimation) {
+        mAllowCheckStateAnimation = allowAnimation;
+    }
+
+    /**
      * Default implementation of the placeholder text formatting.
      *
      * @param text
@@ -387,6 +411,17 @@ public class CircularImageView
     }
 
     /**
+     * Tells the widget whether it should draw the border. This method will be called
+     * every time from {@linkplain #onDraw(Canvas)} ONLY when border width > 0 and
+     * the view is in non-checked state.
+     *
+     * @return
+     */
+    protected boolean shouldDrawBorder() {
+        return true;
+    }
+
+    /**
      * Default implementation of text {@code Paint} creation.
      *
      * @return
@@ -399,6 +434,30 @@ public class CircularImageView
         return textPaint;
     }
 
+    /**
+     * Default implementation of check mark {@code Paint} creation.
+     *
+     * @return
+     */
+    protected Paint getCheckMarkPaint() {
+        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paint.setColor(DEFAULT_CHECK_STROKE_COLOR);
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setStrokeWidth(getCheckMarkStrokeWidthInPixels());
+        return paint;
+    }
+
+    /**
+     * Returns the default check mark stroke width in pixels.
+     *
+     * @return
+     */
+    protected int getCheckMarkStrokeWidthInPixels() {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                DEFAULT_CHECK_STROKE_WIDTH_IN_DP,
+                getResources().getDisplayMetrics());
+    }
+
     @Override
     protected void onDraw(Canvas canvas) {
         int x = mWidth / 2;
@@ -409,9 +468,12 @@ public class CircularImageView
             drawCheckedState(canvas, mWidth, mHeight);
         }
         else {
+            // Checks whether to draw border
+            boolean drawBorder = (mBorderWidth > 0) && shouldDrawBorder();
             // Offset makes sure that there is no visible gap between
             // border and drawable
-            int offset = (mBorderWidth > 0) ? mBorderWidth - 1 : 0;
+            int offset = drawBorder ? mBorderWidth - 1 : 0;
+
             if (null != getDrawable()) {
                 // Draws the bitmap if available
                 canvas.drawCircle(x, y, mRadius - offset, mBitmapPaint);
@@ -426,7 +488,7 @@ public class CircularImageView
             }
 
             // Draw the border
-            if ((null != mBorderPaint) && (mBorderWidth > 0)) {
+            if ((null != mBorderPaint) && drawBorder) {
                 canvas.drawCircle(x, y, mRadius - (mBorderWidth * 0.5f), mBorderPaint);
             }
         }
@@ -454,7 +516,7 @@ public class CircularImageView
         mPath.reset();
         mPath.moveTo(sx, sy - halfH);
         mPath.lineTo(sx, sy + halfH); // draw long stroke
-        mPath.moveTo(sx + (mCheckStrokeWidth * .5f), sy + halfH);
+        mPath.moveTo(sx + (getCheckMarkStrokeWidthInPixels() * .5f), sy + halfH);
         mPath.lineTo(sx - shortStrokeHeight, sy + halfH); // draw short stroke
 
         // Rotates the canvas to draw an angled check mark
@@ -485,7 +547,8 @@ public class CircularImageView
         float x = 0, y = 0;
         int diameter = mRadius * 2;
         // Offset takes the border width in to account when calculating the the scale
-        int offset = (mBorderWidth > 0) ? (mBorderWidth * 2 - 2) : 0;
+        boolean drawBorder = (mBorderWidth > 0) && shouldDrawBorder();
+        int offset = drawBorder ? (mBorderWidth * 2 - 2) : 0;
         float scale = (float) (diameter - offset) / (float) Math.min(bitmapHeight, bitmapWidth);
 
         x = (mWidth - bitmapWidth * scale) * 0.5f;
@@ -511,23 +574,28 @@ public class CircularImageView
         if (mChecked == checked)
             return;
 
-        final int duration = 150;
-        final Interpolator interpolator = new DecelerateInterpolator();
-        ObjectAnimator animation = ObjectAnimator.ofFloat(this, "scaleX", 1f, 0f);
-        animation.setDuration(duration);
-        animation.setInterpolator(interpolator);
-        animation.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                mChecked = checked;
-                invalidate();
-                ObjectAnimator reverse = ObjectAnimator.ofFloat(CircularImageView.this, "scaleX", 0f, 1f);
-                reverse.setDuration(duration);
-                reverse.setInterpolator(interpolator);
-                reverse.start();
-            }
-        });
-        animation.start();
+        if (mAllowCheckStateAnimation) {
+            final int duration = 150;
+            final Interpolator interpolator = new DecelerateInterpolator();
+            ObjectAnimator animation = ObjectAnimator.ofFloat(this, "scaleX", 1f, 0f);
+            animation.setDuration(duration);
+            animation.setInterpolator(interpolator);
+            animation.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    mChecked = checked;
+                    invalidate();
+                    ObjectAnimator reverse = ObjectAnimator.ofFloat(CircularImageView.this, "scaleX", 0f, 1f);
+                    reverse.setDuration(duration);
+                    reverse.setInterpolator(interpolator);
+                    reverse.start();
+                }
+            });
+            animation.start();
+        } else {
+            mChecked = checked;
+            invalidate();
+        }
     }
 
     @Override
