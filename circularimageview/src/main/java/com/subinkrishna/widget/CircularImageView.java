@@ -409,7 +409,9 @@ public class CircularImageView
             drawCheckedState(canvas, mWidth, mHeight);
         }
         else {
-            int offset = mBorderWidth > 0 ? 1 : 0;
+            // Offset makes sure that there is no visible gap between
+            // border and drawable
+            int offset = (mBorderWidth > 0) ? mBorderWidth - 1 : 0;
             if (null != getDrawable()) {
                 // Draws the bitmap if available
                 canvas.drawCircle(x, y, mRadius - offset, mBitmapPaint);
@@ -482,7 +484,9 @@ public class CircularImageView
         int bitmapHeight = bitmap.getHeight();
         float x = 0, y = 0;
         int diameter = mRadius * 2;
-        float scale = (float) (diameter - mBorderWidth) / (float) Math.min(bitmapHeight, bitmapWidth);
+        // Offset takes the border width in to account when calculating the the scale
+        int offset = (mBorderWidth > 0) ? (mBorderWidth * 2 - 2) : 0;
+        float scale = (float) (diameter - offset) / (float) Math.min(bitmapHeight, bitmapWidth);
 
         x = (mWidth - bitmapWidth * scale) * 0.5f;
         y = (mHeight - bitmapHeight * scale) * 0.5f;
