@@ -43,6 +43,7 @@ public class AvatarView extends CircularImageView {
 
     @Override
     protected int getCheckMarkStrokeWidthInPixels() {
+        // Overriding stroke width to 5dp (default is 3dp)
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
                 5, // DIPs
                 getResources().getDisplayMetrics());
