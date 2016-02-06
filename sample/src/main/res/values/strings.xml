@@ -2,12 +2,43 @@
     <string name="app_name">CircularImageView Sample</string>
     <string name="action_settings">Settings</string>
     <string name="action_show_code">Show Code</string>
-    <string name="xml">XML</string>
 
     <string name="image1">Image 1</string>
     <string name="image2">Image 2</string>
     <string name="image_from_cloud">From cloud</string>
     <string name="no_image">No Image</string>
     <string name="loading_remote_image">Loading remote image using Picasso [NO CACHE, WITH PLACEHOLDER]</string>
+
+    <string name="xml">XML</string>
+    <string name="xml_code_template"><![CDATA[
+    <com.subinkrishna.widget.CircularImageView
+      \n\t android:id=\"@+id/civ\"
+      \n\t android:layout_width=\"@dimen/civ_size\"
+      \n\t android:layout_height=\"@dimen/civ_size\"
+      \n\t android:layout_centerInParent=\"true\"
+      \n\t app:ci_borderColor=\"#999\"
+      \n\t app:ci_borderWidth=\"5dp\"
+      \n\t app:ci_placeholderBackgroundColor=\"#999\"
+      \n\t app:ci_placeholderText=\"cv\"
+      \n\t app:ci_placeholderTextColor=\"@android:color/white\"
+      \n\t app:ci_placeholderTextSize=\"55sp\"
+      />]]></string>
+
+    <string name="java">Java</string>
+    <string name="java_code_template"><![CDATA[
+    CircularImageView mImage = findViewById(R.id.civ);
+    \nmImage.setImageResource(%s);
+    ]]></string>
+
+    <string name="picasso_code_template"><![CDATA[
+    CircularImageView mImage = findViewById(R.id.civ);
+    \nPicasso.with(context)
+    \n\t.load(\"<URL>\")
+    \n\t.noFade()
+    \n\t.placeholder(R.drawable.placeholder)
+    \n\t.resize(mCivSize, mCivSize)
+    \n\t.centerCrop()
+    \n\t.into(mImage);
+    ]]></string>
 
 </resources>

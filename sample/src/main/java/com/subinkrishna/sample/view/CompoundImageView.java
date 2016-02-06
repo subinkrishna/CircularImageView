@@ -2,7 +2,6 @@ package com.subinkrishna.sample.view;
 
 import android.content.Context;
 import android.support.annotation.ColorInt;
-import android.support.annotation.DrawableRes;
 import android.support.annotation.StringRes;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -12,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.subinkrishna.sample.R;
-import com.subinkrishna.widget.CircularImageView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;

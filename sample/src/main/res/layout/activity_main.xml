@@ -70,7 +70,7 @@
         android:layout_height="match_parent"
         android:layout_below="@id/source_selector_container">
 
-        <com.subinkrishna.widget.CircularImageView
+        <com.subinkrishna.sample.view.AvatarView
             android:id="@+id/civ"
             android:layout_width="@dimen/civ_size"
             android:layout_height="@dimen/civ_size"
@@ -84,7 +84,7 @@
 
     </RelativeLayout>
 
-    <RelativeLayout
+    <ScrollView
         android:id="@+id/code_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -92,22 +92,73 @@
         android:background="#78909C"
         android:clickable="true"
         android:visibility="gone"
-        tools:visibility="gone">
+        tools:visibility="visible">
 
-        <TextView
-            android:id="@+id/code"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:text="sample code"
-            android:textColor="@android:color/white" />
+            android:orientation="vertical"
+            android:padding="16dp">
 
-    </RelativeLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollHorizontally="true"
+                android:text="@string/xml"
+                android:textColor="@android:color/holo_orange_light"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/code_xml"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="@string/xml_code_template"
+                android:textColor="@android:color/white"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollHorizontally="true"
+                android:text="@string/java"
+                android:layout_marginTop="30dp"
+                android:textColor="@android:color/holo_orange_light"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/code_java"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="@string/picasso_code_template"
+                android:textColor="@android:color/white"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+    </ScrollView>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="3dp"
         android:layout_below="@id/source_selector_container"
         android:background="@drawable/shadow_gradient_bottom" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@drawable/ic_code_black_24dp"
+        android:tint="@android:color/white"
+        app:backgroundTint="@android:color/holo_orange_light"
+        app:borderWidth="0dp"
+        app:elevation="5dp"
+        app:fabSize="normal" />
 
 </RelativeLayout>

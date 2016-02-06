@@ -12,15 +12,16 @@ import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.util.TypedValue;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,11 +43,15 @@ public class MainActivity
 
     @Bind(R.id.toolbar) Toolbar mToolbar;
     @Bind(R.id.toolbar_title) TextView mTitleTextView;
-    @Bind(R.id.code_container) ViewGroup mCodeContainer;
-    @Bind(R.id.code) TextView mCodeTextView;
+    @Bind(R.id.code_container) ScrollView mCodeContainer;
+    @Bind(R.id.code_xml) TextView mXmlCodeTextView;
+    @Bind(R.id.code_java) TextView mJavaCodeTextView;
     @Bind(R.id.image_container) ViewGroup mImageContainer;
     @Bind(R.id.civ) CircularImageView mImage;
+    @Bind(R.id.fab) FloatingActionButton mFab;
+
     @BindDimen(R.dimen.civ_size) int mCivSize;
+    @BindDimen(R.dimen.reveal_offset) int mRevealOffset;
 
     // Thumbnails
     @Bind(R.id.thumbnail_1) CompoundImageView mThumbnail1;
@@ -66,43 +71,35 @@ public class MainActivity
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+        Log.d(TAG, "Offset: " + mRevealOffset);
+
         Typeface mono = Typeface.createFromAsset(getAssets(), "fonts/roboto/Mono-Regular.ttf");
-        mTitleTextView.setTypeface(mono);
-        mCodeTextView.setTypeface(mono);
+        //mTitleTextView.setTypeface(mono);
+        //mCodeTextView.setTypeface(mono);
 
         // Init Picasso
         Picasso.with(this).setLoggingEnabled(true);
 
         setupThumbnails();
         setToolbar();
-        setImageContainer();
-        setImage(mThumbnail1);
+        setupImageContainer();
+        updateImage(mThumbnail1);
 
-        findViewById(R.id.civ).setOnClickListener(new View.OnClickListener() {
+        // Toggle CircularImageView
+        mImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ((CircularImageView) v).toggle();
             }
         });
-    }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_settings:
-                return true;
-            case R.id.action_code:
+        mFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "Animate!");
                 if (!mIsAnimating) toggleCode();
-                return true;
-        }
-
-        return super.onOptionsItemSelected(item);
+            }
+        });
     }
 
     @SuppressLint("NewApi")
@@ -113,21 +110,22 @@ public class MainActivity
 
         mIsAnimating = true;
 
+        // Reveal only for SDK version 21 or above
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            // Reveal only for SDK version 21 or above
-            float startRadius = isCodeVisible ? (float) w * 1.3f : 0;
-            float endRadius = isCodeVisible ? 0 : (float) w * 1.3f;
+            float startRadius = isCodeVisible ? (float) w * 1.5f : 0;
+            float endRadius = isCodeVisible ? 0 : (float) w * 1.5f;
             Animator anim = ViewAnimationUtils.createCircularReveal(mCodeContainer,
-                    w, 0, startRadius, endRadius);
+                    w - mRevealOffset,
+                    h - mRevealOffset,
+                    startRadius,
+                    endRadius);
+            anim.setDuration(getResources().getInteger(android.R.integer.config_mediumAnimTime));
 
             anim.addListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
                     super.onAnimationEnd(animation);
-                    if (isCodeVisible) {
-                        mCodeContainer.setVisibility(View.GONE);
-                    }
-                    mIsAnimating = false;
+                    onCodeContainerAnimationEnd(isCodeVisible);
                 }
             });
 
@@ -136,8 +134,10 @@ public class MainActivity
             }
 
             anim.start();
-        } else {
-            // Else slide
+        }
+
+        // Else slide
+        else {
             if (!isCodeVisible) {
                 mCodeContainer.setTranslationY(h);
                 mCodeContainer.setVisibility(View.VISIBLE);
@@ -152,10 +152,7 @@ public class MainActivity
             anim.addListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
-                    if (isCodeVisible) {
-                        mCodeContainer.setVisibility(View.GONE);
-                    }
-                    mIsAnimating = false;
+                    onCodeContainerAnimationEnd(isCodeVisible);
                 }
             });
 
@@ -163,6 +160,26 @@ public class MainActivity
         }
     }
 
+    /**
+     * Updates the view on animation end.
+     *
+     * @param isCodeVisible
+     */
+    private void onCodeContainerAnimationEnd(boolean isCodeVisible) {
+        if (isCodeVisible) {
+            mCodeContainer.setVisibility(View.GONE);
+            mFab.setImageResource(R.drawable.ic_code_black_24dp);
+            mCodeContainer.scrollTo(0, 0);
+        } else {
+            mFab.setImageResource(R.drawable.ic_close_black_24dp);
+        }
+
+        mIsAnimating = false;
+    }
+
+    /**
+     * Setup thumbnails
+     */
     private void setupThumbnails() {
         int defaultTextBgColor = 0xFFAAAAAA;
         int textBgColorForNoImage = 0xFF87170B;
@@ -185,7 +202,10 @@ public class MainActivity
         }
     }
 
-    private void setImageContainer() {
+    /**
+     * Setup image container
+     */
+    private void setupImageContainer() {
         Resources res = getResources();
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.grid);
         int cellH = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 22, res.getDisplayMetrics());
@@ -197,7 +217,12 @@ public class MainActivity
         mImageContainer.setBackgroundDrawable(bitmapDrawable);
     }
 
-    private void setImage(CompoundImageView v) {
+    /**
+     * Updates image (CircularImageView) on selecting a thumbnail
+     *
+     * @param v
+     */
+    private void updateImage(CompoundImageView v) {
         if (v == mSelectedThumbnail)
             return;
 
@@ -212,12 +237,15 @@ public class MainActivity
         switch (mSelectedThumbnail.getId()) {
             case R.id.thumbnail_1:
                 mImage.setImageResource(R.drawable.c1);
+                updateCode(getString(R.string.java_code_template, "R.drawable.c1"));
                 break;
             case R.id.thumbnail_2:
                 mImage.setImageResource(R.drawable.c2);
+                updateCode(getString(R.string.java_code_template, "R.drawable.c2"));
                 break;
             case R.id.thumbnail_no_image:
                 mImage.setImageDrawable(null);
+                updateCode(getString(R.string.java_code_template, "null"));
                 break;
             case R.id.thumbnail_from_cloud:
                 Toast.makeText(this, R.string.loading_remote_image, Toast.LENGTH_SHORT).show();
@@ -229,8 +257,18 @@ public class MainActivity
                         .memoryPolicy(MemoryPolicy.NO_CACHE)
                         .centerCrop()
                         .into(mImage);
+                updateCode(getString(R.string.picasso_code_template));
                 break;
         }
+    }
+
+    /**
+     * Updates code
+     *
+     * @param java
+     */
+    private void updateCode(String java) {
+        mJavaCodeTextView.setText(java);
     }
 
     @Override
@@ -240,7 +278,7 @@ public class MainActivity
             case R.id.thumbnail_2:
             case R.id.thumbnail_no_image:
             case R.id.thumbnail_from_cloud:
-                setImage((CompoundImageView) v);
+                updateImage((CompoundImageView) v);
                 break;
 
         }
