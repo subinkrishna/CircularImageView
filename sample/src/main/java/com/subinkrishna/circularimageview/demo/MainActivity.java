@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.subinkrishna.sample;
+package com.subinkrishna.circularimageview.demo;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -43,7 +43,7 @@ import android.widget.Toast;
 
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
-import com.subinkrishna.sample.view.CompoundImageView;
+import com.subinkrishna.circularimageview.demo.view.CompoundImageView;
 import com.subinkrishna.widget.CircularImageView;
 
 import butterknife.Bind;

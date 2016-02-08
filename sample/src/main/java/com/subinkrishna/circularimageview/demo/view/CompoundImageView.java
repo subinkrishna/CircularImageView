@@ -1,16 +1,3 @@
-package com.subinkrishna.sample.view;
-
-import android.content.Context;
-import android.support.annotation.ColorInt;
-import android.support.annotation.StringRes;
-import android.util.AttributeSet;
-import android.view.LayoutInflater;
-import android.widget.Checkable;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.TextView;
-
-import com.subinkrishna.sample.R;
 /*
  * Copyright (C) 2016 Subinkrishna Gopi
  *
@@ -26,6 +13,20 @@ import com.subinkrishna.sample.R;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+package com.subinkrishna.circularimageview.demo.view;
+
+import android.content.Context;
+import android.support.annotation.ColorInt;
+import android.support.annotation.StringRes;
+import android.util.AttributeSet;
+import android.view.LayoutInflater;
+import android.widget.Checkable;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.subinkrishna.circularimageview.demo.R;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;

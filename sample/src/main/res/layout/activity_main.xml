@@ -40,22 +40,22 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <com.subinkrishna.sample.view.CompoundImageView
+            <com.subinkrishna.circularimageview.demo.view.CompoundImageView
                 android:id="@+id/thumbnail_1"
                 android:layout_width="@dimen/image_icon_size"
                 android:layout_height="@dimen/image_icon_size" />
 
-            <com.subinkrishna.sample.view.CompoundImageView
+            <com.subinkrishna.circularimageview.demo.view.CompoundImageView
                 android:id="@+id/thumbnail_2"
                 android:layout_width="@dimen/image_icon_size"
                 android:layout_height="@dimen/image_icon_size" />
 
-            <com.subinkrishna.sample.view.CompoundImageView
+            <com.subinkrishna.circularimageview.demo.view.CompoundImageView
                 android:id="@+id/thumbnail_from_cloud"
                 android:layout_width="@dimen/image_icon_size"
                 android:layout_height="@dimen/image_icon_size" />
 
-            <com.subinkrishna.sample.view.CompoundImageView
+            <com.subinkrishna.circularimageview.demo.view.CompoundImageView
                 android:id="@+id/thumbnail_no_image"
                 android:layout_width="@dimen/image_icon_size"
                 android:layout_height="@dimen/image_icon_size" />
@@ -70,7 +70,7 @@
         android:layout_height="match_parent"
         android:layout_below="@id/source_selector_container">
 
-        <com.subinkrishna.sample.view.AvatarView
+        <com.subinkrishna.circularimageview.demo.view.AvatarView
             android:id="@+id/civ"
             android:layout_width="@dimen/civ_size"
             android:layout_height="@dimen/civ_size"

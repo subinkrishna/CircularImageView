@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.subinkrishna.sample.view;
+package com.subinkrishna.circularimageview.demo.view;
 
 import android.content.Context;
 import android.graphics.Color;

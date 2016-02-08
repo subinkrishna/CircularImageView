@@ -1,4 +1,4 @@
-package com.subinkrishna.sample;
+package com.subinkrishna.circularimageview.demo;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
