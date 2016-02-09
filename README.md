@@ -4,6 +4,8 @@ A checkable Android ImageView implementation that draws circular images with sup
 
 ![Cat](art/cat.png)
 
+[Download sample application][app]
+
 ## Download
 
 Download the latest version from [releases][1].
@@ -26,8 +28,7 @@ Or **Maven:**
 </dependency>
 ````
 
-
-# Usage
+## Usage
 
 **XML:**
 
@@ -206,5 +207,6 @@ Placeholder text is shown along with custom border & background when no bitmap i
     limitations under the License.
 
 [1]: ../../releases
+[app]:https://play.google.com/store/apps/details?id=com.subinkrishna.circularimageview.demo
 [picasso]: http://square.github.io/picasso/
 [glide]: https://github.com/bumptech/glide
