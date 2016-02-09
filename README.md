@@ -4,7 +4,7 @@ A checkable Android ImageView implementation that draws circular images with sup
 
 ![Cat](art/cat.png)
 
-[Download sample application][app]
+[**Download sample application from Google Play**][app]
 
 ## Download
 
