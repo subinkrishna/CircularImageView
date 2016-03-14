@@ -118,6 +118,17 @@ public class MainActivity
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        if (!mIsAnimating) {
+            if (mCodeContainer.getVisibility() == View.VISIBLE) {
+                toggleCode();
+            } else {
+                super.onBackPressed();
+            }
+        }
+    }
+
     @SuppressLint("NewApi")
     private void toggleCode() {
         final boolean isCodeVisible = mCodeContainer.getVisibility() == View.VISIBLE;
