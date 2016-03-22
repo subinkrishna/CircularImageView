@@ -125,19 +125,29 @@ public class CircularImageView
         mShadowColor = DEFAULT_SHADOW_COLOR;
 
         if (null != t) {
+            // Border and background
             mBorderWidth = t.getDimensionPixelSize(R.styleable.CircularImageView_ci_borderWidth, 0);
             mBorderColor = t.getColor(R.styleable.CircularImageView_ci_borderColor,
                     DEFAULT_BORDER_COLOR);
             mBackgroundColor = t.getColor(R.styleable.CircularImageView_ci_placeholderBackgroundColor,
                     DEFAULT_BACKGROUND_COLOR);
+
+            // Placeholder text
             mText = t.getString(R.styleable.CircularImageView_ci_placeholderText);
             mTextColor = t.getColor(R.styleable.CircularImageView_ci_placeholderTextColor,
                     DEFAULT_TEXT_COLOR);
             mTextSize = t.getDimensionPixelSize(R.styleable.CircularImageView_ci_placeholderTextSize, 0);
 
+            // Check state
             mChecked = t.getBoolean(R.styleable.CircularImageView_ci_checked, false);
             mCheckedBackgroundColor = t.getColor(R.styleable.CircularImageView_ci_checkedStateBackgroundColor,
                     DEFAULT_CHECKED_BACKGROUND_COLOR);
+
+            // Shadow
+            mShadowRadius = Math.max(t.getFloat(R.styleable.CircularImageView_ci_shadowRadius,
+                    DEFAULT_SHADOW_RADIUS), 0);
+            mShadowColor = t.getColor(R.styleable.CircularImageView_ci_shadowColor,
+                    DEFAULT_SHADOW_COLOR);
 
             t.recycle();
         }
@@ -175,15 +185,15 @@ public class CircularImageView
         mBorderWidth = rawSize;
         mBorderColor = color;
 
-        if ((null == mBorderPaint) && (rawSize > 0)) {
+        if (null == mBorderPaint) {
             mBorderPaint = new Paint();
             mBorderPaint.setAntiAlias(true);
-            mBorderPaint.setStyle(Paint.Style.STROKE);
+            mBorderPaint.setStyle(Paint.Style.FILL_AND_STROKE);
         }
 
         if (null != mBorderPaint) {
             mBorderPaint.setColor(mBorderColor);
-            mBorderPaint.setStrokeWidth(mBorderWidth); // in pixels
+            mBorderPaint.setStrokeWidth(Math.max(0, mBorderWidth)); // in pixels
         }
 
         // Invalidate the view if asked
@@ -192,18 +202,26 @@ public class CircularImageView
         }
     }
 
+    /**
+     * Sets shadow layers
+     */
     private void setShadowInternal() {
+        // Reset previous shadow layer
+        mBorderPaint.clearShadowLayer();
+        mCheckedBackgroundPaint.clearShadowLayer();
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             setLayerType(LAYER_TYPE_SOFTWARE, mBorderPaint);
+            setLayerType(LAYER_TYPE_SOFTWARE, mCheckedBackgroundPaint);
         }
 
-        mCheckedBackgroundPaint.setShadowLayer(
+        mBorderPaint.setShadowLayer(
                 mShadowRadius,
                 0.0f,
                 mShadowRadius / 2,
                 mShadowColor);
 
-        mBorderPaint.setShadowLayer(
+        mCheckedBackgroundPaint.setShadowLayer(
                 mShadowRadius,
                 0.0f,
                 mShadowRadius / 2,
@@ -258,6 +276,8 @@ public class CircularImageView
             updateBitmapShader();
         }
     }
+
+    // TODO: setShadowRadius(radius), setShadowColor(colorInt), allowCheckStateShadow(enable)
 
     @Override
     public void setImageDrawable(Drawable drawable) {
@@ -496,7 +516,7 @@ public class CircularImageView
         }
         else {
             // Checks whether to draw border
-            boolean drawBorder = (mBorderWidth > 0) && shouldDrawBorder();
+            boolean drawBorder = shouldDrawBorder();
             // Draw the border
             if ((null != mBorderPaint) && drawBorder) {
                 canvas.drawCircle(x, y,
@@ -506,7 +526,7 @@ public class CircularImageView
 
             // Offset makes sure that there is no visible gap between
             // border and drawable
-            int offset = drawBorder ? mBorderWidth - 1 : 0;
+            int offset = drawBorder && (mBorderWidth > 0) ? mBorderWidth - 1 : 0;
             // Consider shadow
             offset += mShadowRadius * 1.5f;
 
