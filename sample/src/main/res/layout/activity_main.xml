@@ -81,7 +81,7 @@
             app:ci_placeholderText="cv"
             app:ci_placeholderTextColor="@android:color/darker_gray"
             app:ci_placeholderTextSize="55sp"
-            app:ci_shadowRadius="8.0"/>
+            app:ci_shadowRadius="5.0"/>
 
     </RelativeLayout>
 

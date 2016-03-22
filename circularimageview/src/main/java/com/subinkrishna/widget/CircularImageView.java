@@ -68,7 +68,7 @@ public class CircularImageView
 
     /** Default dimensions */
     private static final float DEFAULT_CHECK_STROKE_WIDTH_IN_DP = 3f;
-    private static final float DEFAULT_SHADOW_RADIUS = 2;
+    private static final float DEFAULT_SHADOW_RADIUS = 0;
 
     private Paint mBitmapPaint;
     private Paint mBorderPaint;
@@ -92,7 +92,8 @@ public class CircularImageView
     private String mText;
     private int mTextSize;
     private boolean mChecked;
-    private boolean mAllowCheckStateAnimation = true;
+    private boolean mAllowCheckStateAnimation = true,
+                    mAllowCheckStateShadow = false;
 
     public CircularImageView(Context context) {
         super(context);
@@ -169,7 +170,7 @@ public class CircularImageView
 
         mCheckMarkPaint = getCheckMarkPaint();
 
-        setShadowInternal();
+        setShadowInternal(mShadowRadius, mShadowColor);
     }
 
     /**
@@ -203,9 +204,16 @@ public class CircularImageView
     }
 
     /**
-     * Sets shadow layers
+     * Set shadow layers
+     *
+     * @param radius
+     * @param color
      */
-    private void setShadowInternal() {
+    private void setShadowInternal(float radius,
+                                   @ColorInt int color) {
+        mShadowRadius = radius;
+        mShadowColor = color;
+
         // Reset previous shadow layer
         mBorderPaint.clearShadowLayer();
         mCheckedBackgroundPaint.clearShadowLayer();
@@ -221,11 +229,13 @@ public class CircularImageView
                 mShadowRadius / 2,
                 mShadowColor);
 
-        mCheckedBackgroundPaint.setShadowLayer(
-                mShadowRadius,
-                0.0f,
-                mShadowRadius / 2,
-                mShadowColor);
+        if (mAllowCheckStateShadow) {
+            mCheckedBackgroundPaint.setShadowLayer(
+                    mShadowRadius,
+                    0.0f,
+                    mShadowRadius / 2,
+                    mShadowColor);
+        }
     }
 
     /**
@@ -276,8 +286,6 @@ public class CircularImageView
             updateBitmapShader();
         }
     }
-
-    // TODO: setShadowRadius(radius), setShadowColor(colorInt), allowCheckStateShadow(enable)
 
     @Override
     public void setImageDrawable(Drawable drawable) {
@@ -440,6 +448,43 @@ public class CircularImageView
      */
     public final void allowCheckStateAnimation(boolean allowAnimation) {
         mAllowCheckStateAnimation = allowAnimation;
+    }
+
+    /**
+     * Sets shadow radius
+     *
+     * @param radius
+     */
+    public void setShadowRadius(float radius) {
+        if (radius != mShadowRadius) {
+            setShadowInternal(radius, mShadowColor);
+            invalidate();
+        }
+    }
+
+    /**
+     * Sets shadow color
+     *
+     * @param color
+     */
+    public void setShadowColor(@ColorInt int color) {
+        if (color != mShadowColor) {
+            setShadowInternal(mShadowRadius, color);
+            invalidate();
+        }
+    }
+
+    /**
+     * Allow shadow when in checked state.
+     *
+     * @param allow
+     */
+    public void allowCheckStateShadow(boolean allow) {
+        if (allow != mAllowCheckStateShadow) {
+            mAllowCheckStateShadow = allow;
+            setShadowInternal(mShadowRadius, mShadowColor);
+            invalidate();
+        }
     }
 
     /**

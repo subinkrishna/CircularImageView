@@ -91,10 +91,13 @@ public class MainActivity
 
         Typeface mono = Typeface.createFromAsset(getAssets(), "fonts/roboto/Mono-Regular.ttf");
         //mTitleTextView.setTypeface(mono);
-        //mCodeTextView.setTypeface(mono);
+        //mJavaCodeTextView.setTypeface(mono);
+        //mXmlCodeTextView.setTypeface(mono);
 
         // Init Picasso
         Picasso.with(this).setLoggingEnabled(true);
+
+        mImage.allowCheckStateShadow(true);
 
         setupThumbnails();
         setToolbar();
