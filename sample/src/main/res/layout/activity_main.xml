@@ -75,11 +75,11 @@
             android:layout_width="@dimen/civ_size"
             android:layout_height="@dimen/civ_size"
             android:layout_centerInParent="true"
-            app:ci_borderColor="#999"
+            app:ci_borderColor="#FFF"
             app:ci_borderWidth="5dp"
-            app:ci_placeholderBackgroundColor="#999"
+            app:ci_placeholderBackgroundColor="#FFF"
             app:ci_placeholderText="cv"
-            app:ci_placeholderTextColor="@android:color/white"
+            app:ci_placeholderTextColor="@android:color/darker_gray"
             app:ci_placeholderTextSize="55sp" />
 
     </RelativeLayout>
