@@ -91,7 +91,7 @@
             android:layout_centerInParent="true"
             app:ci_borderColor="#FFF"
             app:ci_borderWidth="0dp"
-            app:ci_placeholderBackgroundColor="#FFF"
+            app:ci_placeholderBackgroundColor="#EEE"
             app:ci_placeholderText="cv"
             app:ci_placeholderTextColor="@android:color/darker_gray"
             app:ci_placeholderTextSize="55sp" />

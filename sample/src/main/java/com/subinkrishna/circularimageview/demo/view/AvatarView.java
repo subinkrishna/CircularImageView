@@ -60,4 +60,8 @@ public class AvatarView extends CircularImageView {
                 getResources().getDisplayMetrics());
     }
 
+    @Override
+    protected boolean shouldDrawBorder() {
+        return true;
+    }
 }

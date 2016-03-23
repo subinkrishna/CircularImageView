@@ -169,7 +169,7 @@ public class CircularImageView
 
         mCheckMarkPaint = getCheckMarkPaint();
 
-        setShadowInternal(mShadowRadius, mShadowColor);
+        setShadowInternal(mShadowRadius, mShadowColor, false);
     }
 
     /**
@@ -188,7 +188,7 @@ public class CircularImageView
         if (null == mBorderPaint) {
             mBorderPaint = new Paint();
             mBorderPaint.setAntiAlias(true);
-            mBorderPaint.setStyle(Paint.Style.FILL_AND_STROKE);
+            mBorderPaint.setStyle(Paint.Style.FILL);
         }
 
         if (null != mBorderPaint) {
@@ -207,9 +207,11 @@ public class CircularImageView
      *
      * @param radius
      * @param color
+     * @param invalidate
      */
     private void setShadowInternal(float radius,
-                                   @ColorInt int color) {
+                                   @ColorInt int color,
+                                   boolean invalidate) {
         mShadowRadius = radius;
         mShadowColor = color;
 
@@ -234,6 +236,11 @@ public class CircularImageView
                     0.0f,
                     mShadowRadius / 2,
                     mShadowColor);
+        }
+
+        // Invalidate the view if asked
+        if (invalidate) {
+            invalidate();
         }
     }
 
@@ -444,8 +451,7 @@ public class CircularImageView
         }
 
         if (radius != mShadowRadius) {
-            setShadowInternal(radius, mShadowColor);
-            invalidate();
+            setShadowInternal(radius, mShadowColor, true);
         }
     }
 
@@ -456,8 +462,7 @@ public class CircularImageView
      */
     public void setShadowColor(@ColorInt int color) {
         if (color != mShadowColor) {
-            setShadowInternal(mShadowRadius, color);
-            invalidate();
+            setShadowInternal(mShadowRadius, color, true);
         }
     }
 
@@ -469,8 +474,7 @@ public class CircularImageView
     public void allowCheckStateShadow(boolean allow) {
         if (allow != mAllowCheckStateShadow) {
             mAllowCheckStateShadow = allow;
-            setShadowInternal(mShadowRadius, mShadowColor);
-            invalidate();
+            setShadowInternal(mShadowRadius, mShadowColor, true);
         }
     }
 
@@ -549,16 +553,17 @@ public class CircularImageView
         else {
             // Checks whether to draw border
             boolean drawBorder = shouldDrawBorder();
+            int borderWidth = drawBorder ? mBorderWidth : 0;
             // Draw the border
-            if ((null != mBorderPaint) && drawBorder) {
+            if (null != mBorderPaint) {
                 canvas.drawCircle(x, y,
-                        mRadius - ((mBorderWidth * 0.5f) + (mShadowRadius * 1.5f)),
+                        mRadius - (mShadowRadius * 1.5f + 1),
                         mBorderPaint);
             }
 
             // Offset makes sure that there is no visible gap between
             // border and drawable
-            int offset = drawBorder && (mBorderWidth > 0) ? mBorderWidth - 1 : 0;
+            int offset = (borderWidth > 0) ? borderWidth : 0;
             // Consider shadow
             offset += mShadowRadius * 1.5f;
 
@@ -632,9 +637,9 @@ public class CircularImageView
         float x = 0, y = 0;
         int diameter = mRadius * 2;
         // Offset takes the border width in to account when calculating the the scale
-        boolean drawBorder = (mBorderWidth > 0) && shouldDrawBorder();
-        int offset = drawBorder ? (mBorderWidth * 2 - 2) : 0;
-        // Consider shadow
+        int borderWidth = shouldDrawBorder() ? mBorderWidth : 0;
+        int offset = (borderWidth > 0) ? (borderWidth * 2) : 0;
+        // Consider shadow too
         offset += mShadowRadius * 1.5f;
         float scale = (float) (diameter - offset) / (float) Math.min(bitmapHeight, bitmapWidth);
 

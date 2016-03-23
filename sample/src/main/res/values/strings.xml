@@ -20,7 +20,7 @@
       \n\t android:layout_centerInParent=\"true\"
       \n\t app:ci_borderColor=\"#FFF\"
       \n\t app:ci_borderWidth=\"5dp\"
-      \n\t app:ci_placeholderBackgroundColor=\"#FFF\"
+      \n\t app:ci_placeholderBackgroundColor=\"#EEE\"
       \n\t app:ci_placeholderText=\"cv\"
       \n\t app:ci_placeholderTextColor=\"@android:color/darker_gray\"
       \n\t app:ci_placeholderTextSize=\"55sp\"
