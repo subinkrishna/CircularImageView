@@ -114,7 +114,7 @@ public class MainActivity
             @Override
             public void onCheckedChanged(CompoundButton buttonView,
                                          boolean isChecked) {
-                mImage.setBorderWidth(TypedValue.COMPLEX_UNIT_DIP, isChecked ? 6 : 0);
+                mImage.setBorderWidth(TypedValue.COMPLEX_UNIT_DIP, isChecked ? 5 : 0);
             }
         });
 
