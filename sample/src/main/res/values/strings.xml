@@ -2,6 +2,8 @@
     <string name="app_name">CircularImageView Sample</string>
     <string name="action_settings">Settings</string>
     <string name="action_show_code">Show Code</string>
+    <string name="enable_shadow">Shadow</string>
+    <string name="enable_border">Border</string>
 
     <string name="image1">Image 1</string>
     <string name="image2">Image 2</string>
@@ -16,11 +18,11 @@
       \n\t android:layout_width=\"@dimen/civ_size\"
       \n\t android:layout_height=\"@dimen/civ_size\"
       \n\t android:layout_centerInParent=\"true\"
-      \n\t app:ci_borderColor=\"#999\"
+      \n\t app:ci_borderColor=\"#FFF\"
       \n\t app:ci_borderWidth=\"5dp\"
-      \n\t app:ci_placeholderBackgroundColor=\"#999\"
+      \n\t app:ci_placeholderBackgroundColor=\"#EEE\"
       \n\t app:ci_placeholderText=\"cv\"
-      \n\t app:ci_placeholderTextColor=\"@android:color/white\"
+      \n\t app:ci_placeholderTextColor=\"@android:color/darker_gray\"
       \n\t app:ci_placeholderTextSize=\"55sp\"
       />]]></string>
 

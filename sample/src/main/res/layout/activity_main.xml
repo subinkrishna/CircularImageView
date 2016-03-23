@@ -68,18 +68,32 @@
         android:id="@+id/image_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/source_selector_container">
+        android:layout_below="@id/source_selector_container"
+        android:padding="10dp">
+
+        <CheckBox
+            android:id="@+id/enable_shadow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/enable_shadow" />
+
+        <CheckBox
+            android:id="@+id/enable_border"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/enable_shadow"
+            android:text="@string/enable_border" />
 
         <com.subinkrishna.circularimageview.demo.view.AvatarView
             android:id="@+id/civ"
             android:layout_width="@dimen/civ_size"
             android:layout_height="@dimen/civ_size"
             android:layout_centerInParent="true"
-            app:ci_borderColor="#999"
-            app:ci_borderWidth="5dp"
-            app:ci_placeholderBackgroundColor="#999"
+            app:ci_borderColor="#FFF"
+            app:ci_borderWidth="0dp"
+            app:ci_placeholderBackgroundColor="#EEE"
             app:ci_placeholderText="cv"
-            app:ci_placeholderTextColor="@android:color/white"
+            app:ci_placeholderTextColor="@android:color/darker_gray"
             app:ci_placeholderTextSize="55sp" />
 
     </RelativeLayout>
@@ -92,7 +106,7 @@
         android:background="#78909C"
         android:clickable="true"
         android:visibility="gone"
-        tools:visibility="visible">
+        tools:visibility="gone">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -121,9 +135,9 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
                 android:scrollHorizontally="true"
                 android:text="@string/java"
-                android:layout_marginTop="30dp"
                 android:textColor="@android:color/holo_orange_light"
                 android:textSize="14sp"
                 android:textStyle="bold" />

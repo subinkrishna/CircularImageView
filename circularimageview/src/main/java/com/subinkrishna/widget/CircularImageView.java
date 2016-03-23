@@ -32,7 +32,7 @@ import android.graphics.Shader;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
+import android.os.Build;
 import android.support.annotation.CallSuper;
 import android.support.annotation.ColorInt;
 import android.text.TextUtils;
@@ -63,9 +63,11 @@ public class CircularImageView
     private static final int DEFAULT_TEXT_COLOR = 0xFF000000;
     private static final int DEFAULT_CHECKED_BACKGROUND_COLOR = 0xFFBBBBBB;
     private static final int DEFAULT_CHECK_STROKE_COLOR = 0xFFFFFFFF;
+    private static final int DEFAULT_SHADOW_COLOR = 0xFF666666;
 
     /** Default dimensions */
     private static final float DEFAULT_CHECK_STROKE_WIDTH_IN_DP = 3f;
+    private static final float DEFAULT_SHADOW_RADIUS = 0;
 
     private Paint mBitmapPaint;
     private Paint mBorderPaint;
@@ -74,6 +76,7 @@ public class CircularImageView
     private Paint mCheckedBackgroundPaint;
     private Paint mTextPaint;
     private int mWidth, mHeight, mRadius;
+    private float mShadowRadius;
     private int mLongStrokeHeight;
     private Path mPath = new Path();
 
@@ -82,12 +85,14 @@ public class CircularImageView
     private int mBorderColor;
     private int mBackgroundColor;
     private int mCheckedBackgroundColor;
+    private int mShadowColor;
     private int mTextColor;
     private int mAlpha = 0xFF;
     private String mText;
     private int mTextSize;
     private boolean mChecked;
-    private boolean mAllowCheckStateAnimation = true;
+    private boolean mAllowCheckStateAnimation = true,
+                    mAllowCheckStateShadow = false;
 
     public CircularImageView(Context context) {
         super(context);
@@ -116,21 +121,33 @@ public class CircularImageView
         mBorderColor = DEFAULT_BORDER_COLOR;
         mBackgroundColor = DEFAULT_BACKGROUND_COLOR;
         mCheckedBackgroundColor = DEFAULT_CHECKED_BACKGROUND_COLOR;
+        mShadowRadius = DEFAULT_SHADOW_RADIUS;
+        mShadowColor = DEFAULT_SHADOW_COLOR;
 
         if (null != t) {
+            // Border and background
             mBorderWidth = t.getDimensionPixelSize(R.styleable.CircularImageView_ci_borderWidth, 0);
             mBorderColor = t.getColor(R.styleable.CircularImageView_ci_borderColor,
                     DEFAULT_BORDER_COLOR);
             mBackgroundColor = t.getColor(R.styleable.CircularImageView_ci_placeholderBackgroundColor,
                     DEFAULT_BACKGROUND_COLOR);
+
+            // Placeholder text
             mText = t.getString(R.styleable.CircularImageView_ci_placeholderText);
             mTextColor = t.getColor(R.styleable.CircularImageView_ci_placeholderTextColor,
                     DEFAULT_TEXT_COLOR);
             mTextSize = t.getDimensionPixelSize(R.styleable.CircularImageView_ci_placeholderTextSize, 0);
 
+            // Check state
             mChecked = t.getBoolean(R.styleable.CircularImageView_ci_checked, false);
             mCheckedBackgroundColor = t.getColor(R.styleable.CircularImageView_ci_checkedStateBackgroundColor,
                     DEFAULT_CHECKED_BACKGROUND_COLOR);
+
+            // Shadow
+            mShadowRadius = Math.max(t.getFloat(R.styleable.CircularImageView_ci_shadowRadius,
+                    DEFAULT_SHADOW_RADIUS), 0);
+            mShadowColor = t.getColor(R.styleable.CircularImageView_ci_shadowColor,
+                    DEFAULT_SHADOW_COLOR);
 
             t.recycle();
         }
@@ -151,6 +168,8 @@ public class CircularImageView
         mCheckedBackgroundPaint.setStyle(Paint.Style.FILL);
 
         mCheckMarkPaint = getCheckMarkPaint();
+
+        setShadowInternal(mShadowRadius, mShadowColor, false);
     }
 
     /**
@@ -166,15 +185,57 @@ public class CircularImageView
         mBorderWidth = rawSize;
         mBorderColor = color;
 
-        if ((null == mBorderPaint) && (rawSize > 0)) {
+        if (null == mBorderPaint) {
             mBorderPaint = new Paint();
             mBorderPaint.setAntiAlias(true);
-            mBorderPaint.setStyle(Paint.Style.STROKE);
+            mBorderPaint.setStyle(Paint.Style.FILL);
         }
 
         if (null != mBorderPaint) {
             mBorderPaint.setColor(mBorderColor);
-            mBorderPaint.setStrokeWidth(mBorderWidth); // in pixels
+            mBorderPaint.setStrokeWidth(Math.max(0, mBorderWidth)); // in pixels
+        }
+
+        // Invalidate the view if asked
+        if (invalidate) {
+            invalidate();
+        }
+    }
+
+    /**
+     * Set shadow layers
+     *
+     * @param radius
+     * @param color
+     * @param invalidate
+     */
+    private void setShadowInternal(float radius,
+                                   @ColorInt int color,
+                                   boolean invalidate) {
+        mShadowRadius = radius;
+        mShadowColor = color;
+
+        // Reset previous shadow layer
+        mBorderPaint.clearShadowLayer();
+        mCheckedBackgroundPaint.clearShadowLayer();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            setLayerType(LAYER_TYPE_SOFTWARE, mBorderPaint);
+            setLayerType(LAYER_TYPE_SOFTWARE, mCheckedBackgroundPaint);
+        }
+
+        mBorderPaint.setShadowLayer(
+                mShadowRadius,
+                0.0f,
+                mShadowRadius / 2,
+                mShadowColor);
+
+        if (mAllowCheckStateShadow) {
+            mCheckedBackgroundPaint.setShadowLayer(
+                    mShadowRadius,
+                    0.0f,
+                    mShadowRadius / 2,
+                    mShadowColor);
         }
 
         // Invalidate the view if asked
@@ -185,6 +246,7 @@ public class CircularImageView
 
     /**
      * Sets placeholder text paint and configs.
+     *
      * @param text
      * @param color
      * @param textSize
@@ -232,28 +294,11 @@ public class CircularImageView
         }
     }
 
+    @CallSuper
     @Override
-    public void setImageDrawable(Drawable drawable) {
-        super.setImageDrawable(drawable);
-        if (null != mBitmapPaint) {
-            updateBitmapShader();
-        }
-    }
-
-    @Override
-    public void setImageResource(int resId) {
-        super.setImageResource(resId);
-        if (null != mBitmapPaint) {
-            updateBitmapShader();
-        }
-    }
-
-    @Override
-    public void setImageURI(Uri uri) {
-        super.setImageURI(uri);
-        if (null != mBitmapPaint) {
-            updateBitmapShader();
-        }
+    public void invalidate() {
+        super.invalidate();
+        updateBitmapShader();
     }
 
     @Override
@@ -396,6 +441,44 @@ public class CircularImageView
     }
 
     /**
+     * Sets shadow radius
+     *
+     * @param radius
+     */
+    public void setShadowRadius(float radius) {
+        if (radius < 0) {
+            throw new IllegalArgumentException("Shadow radius cannot be less than zero.");
+        }
+
+        if (radius != mShadowRadius) {
+            setShadowInternal(radius, mShadowColor, true);
+        }
+    }
+
+    /**
+     * Sets shadow color
+     *
+     * @param color
+     */
+    public void setShadowColor(@ColorInt int color) {
+        if (color != mShadowColor) {
+            setShadowInternal(mShadowRadius, color, true);
+        }
+    }
+
+    /**
+     * Allow shadow when in checked state.
+     *
+     * @param allow
+     */
+    public void allowCheckStateShadow(boolean allow) {
+        if (allow != mAllowCheckStateShadow) {
+            mAllowCheckStateShadow = allow;
+            setShadowInternal(mShadowRadius, mShadowColor, true);
+        }
+    }
+
+    /**
      * Default implementation of the placeholder text formatting.
      *
      * @param text
@@ -469,10 +552,20 @@ public class CircularImageView
         }
         else {
             // Checks whether to draw border
-            boolean drawBorder = (mBorderWidth > 0) && shouldDrawBorder();
+            boolean drawBorder = shouldDrawBorder();
+            int borderWidth = drawBorder ? mBorderWidth : 0;
+            // Draw the border
+            if (null != mBorderPaint) {
+                canvas.drawCircle(x, y,
+                        mRadius - (mShadowRadius * 1.5f + 1),
+                        mBorderPaint);
+            }
+
             // Offset makes sure that there is no visible gap between
             // border and drawable
-            int offset = drawBorder ? mBorderWidth - 1 : 0;
+            int offset = (borderWidth > 0) ? borderWidth : 0;
+            // Consider shadow
+            offset += mShadowRadius * 1.5f;
 
             if (null != getDrawable()) {
                 // Draws the bitmap if available
@@ -485,11 +578,6 @@ public class CircularImageView
                     int ty = (int) ((mHeight - (mTextPaint.ascent() + mTextPaint.descent())) * 0.5f);
                     canvas.drawText(mText, x, ty, mTextPaint);
                 }
-            }
-
-            // Draw the border
-            if ((null != mBorderPaint) && drawBorder) {
-                canvas.drawCircle(x, y, mRadius - (mBorderWidth * 0.5f), mBorderPaint);
             }
         }
     }
@@ -505,7 +593,9 @@ public class CircularImageView
         int x = w / 2;
         int y = h / 2;
 
-        canvas.drawCircle(x, y, mRadius, mCheckedBackgroundPaint);
+        canvas.drawCircle(x, y,
+                mRadius - (mShadowRadius * 1.5f),
+                mCheckedBackgroundPaint);
         canvas.save();
 
         int shortStrokeHeight = (int) (mLongStrokeHeight * .4f);
@@ -547,8 +637,10 @@ public class CircularImageView
         float x = 0, y = 0;
         int diameter = mRadius * 2;
         // Offset takes the border width in to account when calculating the the scale
-        boolean drawBorder = (mBorderWidth > 0) && shouldDrawBorder();
-        int offset = drawBorder ? (mBorderWidth * 2 - 2) : 0;
+        int borderWidth = shouldDrawBorder() ? mBorderWidth : 0;
+        int offset = (borderWidth > 0) ? (borderWidth * 2) : 0;
+        // Consider shadow too
+        offset += mShadowRadius * 1.5f;
         float scale = (float) (diameter - offset) / (float) Math.min(bitmapHeight, bitmapWidth);
 
         x = (mWidth - bitmapWidth * scale) * 0.5f;
