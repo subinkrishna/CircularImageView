@@ -14,7 +14,7 @@ Or get it using **Gradle:**
 
 ````groovy
 dependencies {
-    compile 'com.subinkrishna:circularimageview:1.1.0'
+    compile 'com.subinkrishna:circularimageview:1.2.1'
 }
 ````
 
@@ -24,7 +24,7 @@ Or **Maven:**
 <dependency>
   <groupId>com.subinkrishna</groupId>
   <artifactId>circularimageview</artifactId>
-  <version>1.1.0</version>
+  <version>1.2.1</version>
 </dependency>
 ````
 
@@ -43,7 +43,9 @@ Or **Maven:**
     app:ci_placeholderBackgroundColor="@android:color/black"
     app:ci_placeholderText="CV"
     app:ci_placeholderTextSize="22sp"
-    app:ci_placeholderTextColor="@android:color/white" />
+    app:ci_placeholderTextColor="@android:color/white"
+    app:ci_shadowRadius="5.0"
+    app:ci_shadowColor="#999999" />
 ````
 
 **Java:**
@@ -54,6 +56,8 @@ imageView.setBorderColor(Color.WHITE);
 imageView.setBorderWidth(TypedValue.COMPLEX_UNIT_DIP, 2);
 imageView.setPlaceholder("CV", Color.BLACK, Color.WHITE);
 imageView.setPlaceholderTextSize(TypedValue.COMPLEX_UNIT_SP, 22);
+imageView.setShadowRadius(5.0f);
+imageView.setShadowColor(0xFF999999);
 ````
 
 **Custom Attributes**
@@ -66,6 +70,8 @@ imageView.setPlaceholderTextSize(TypedValue.COMPLEX_UNIT_SP, 22);
 * `ci_placeholderBackgroundColor` (default: `#FFDDDDDD`)
 * `ci_checked` (default: `false`)
 * `ci_checkedStateBackgroundColor` (default: `#FFBBBBBB`)
+* `ci_shadowRadius` (default: `0`)
+* `ci_shadowColor` (default: `#FF666666`)
 
 **Java Methods**
 
@@ -77,6 +83,9 @@ imageView.setPlaceholderTextSize(TypedValue.COMPLEX_UNIT_SP, 22);
 * `setCheckedStateBackgroundColor(@ColorInt int backgroundColor)`
 * `setImageAlpha(int alpha)`
 * `allowCheckStateAnimation(boolean allowAnimation)`
+* `setShadowRadius(float radius)`
+* `setShadowColor(@ColorInt int shadowColor)`
+* `allowCheckStateShadow(boolean allowShadow)`
 
 Methods implemented from `android.widget.Checkable`
 
@@ -168,6 +177,10 @@ Placeholder text is shown along with custom border & background when no bitmap i
 ````
 
 ## Changelog
+
+#### 1.2.1
+
+* Added support for shadows
 
 #### 1.1.0
 
