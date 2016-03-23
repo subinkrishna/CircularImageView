@@ -37,6 +37,8 @@ import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -65,6 +67,8 @@ public class MainActivity
     @Bind(R.id.image_container) ViewGroup mImageContainer;
     @Bind(R.id.civ) CircularImageView mImage;
     @Bind(R.id.fab) FloatingActionButton mFab;
+    @Bind(R.id.enable_shadow) CheckBox mEnableShadowCheckBox;
+    @Bind(R.id.enable_border) CheckBox mEnableBorderCheckBox;
 
     @BindDimen(R.dimen.civ_size) int mCivSize;
     @BindDimen(R.dimen.reveal_offset) int mRevealOffset;
@@ -98,6 +102,21 @@ public class MainActivity
         Picasso.with(this).setLoggingEnabled(true);
 
         mImage.allowCheckStateShadow(true);
+        mEnableShadowCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,
+                                         boolean isChecked) {
+                mImage.setShadowRadius(isChecked ? 5.0f : 0.0f);
+            }
+        });
+
+        mEnableBorderCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,
+                                         boolean isChecked) {
+                mImage.setBorderWidth(TypedValue.COMPLEX_UNIT_DIP, isChecked ? 6 : 0);
+            }
+        });
 
         setupThumbnails();
         setToolbar();

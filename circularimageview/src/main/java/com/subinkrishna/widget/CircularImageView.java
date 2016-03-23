@@ -32,7 +32,6 @@ import android.graphics.Shader;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.CallSuper;
 import android.support.annotation.ColorInt;
@@ -240,6 +239,7 @@ public class CircularImageView
 
     /**
      * Sets placeholder text paint and configs.
+     *
      * @param text
      * @param color
      * @param textSize
@@ -287,28 +287,11 @@ public class CircularImageView
         }
     }
 
+    @CallSuper
     @Override
-    public void setImageDrawable(Drawable drawable) {
-        super.setImageDrawable(drawable);
-        if (null != mBitmapPaint) {
-            updateBitmapShader();
-        }
-    }
-
-    @Override
-    public void setImageResource(int resId) {
-        super.setImageResource(resId);
-        if (null != mBitmapPaint) {
-            updateBitmapShader();
-        }
-    }
-
-    @Override
-    public void setImageURI(Uri uri) {
-        super.setImageURI(uri);
-        if (null != mBitmapPaint) {
-            updateBitmapShader();
-        }
+    public void invalidate() {
+        super.invalidate();
+        updateBitmapShader();
     }
 
     @Override
@@ -456,6 +439,10 @@ public class CircularImageView
      * @param radius
      */
     public void setShadowRadius(float radius) {
+        if (radius < 0) {
+            throw new IllegalArgumentException("Shadow radius cannot be less than zero.");
+        }
+
         if (radius != mShadowRadius) {
             setShadowInternal(radius, mShadowColor);
             invalidate();
