@@ -95,13 +95,11 @@ public class CircularImageView
                     mAllowCheckStateShadow = false;
 
     public CircularImageView(Context context) {
-        super(context);
-        init(context, null);
+        this(context, null, 0);
     }
 
     public CircularImageView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init(context, attrs);
+        this(context, attrs, 0);
     }
 
     public CircularImageView(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -109,8 +107,7 @@ public class CircularImageView
         init(context, attrs);
     }
 
-    private void init(Context context,
-                      AttributeSet attrs) {
+    private void init(Context context, AttributeSet attrs) {
         TypedArray t = null;
         if (null != attrs) {
             t = context.getTheme().obtainStyledAttributes(attrs,
@@ -298,7 +295,10 @@ public class CircularImageView
     @Override
     public void invalidate() {
         super.invalidate();
-        updateBitmapShader();
+
+        if (null != mBitmapPaint) {
+            updateBitmapShader();
+        }
     }
 
     @Override
