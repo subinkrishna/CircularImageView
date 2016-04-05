@@ -14,7 +14,7 @@ Or get it using **Gradle:**
 
 ````groovy
 dependencies {
-    compile 'com.subinkrishna:circularimageview:1.2.1'
+    compile 'com.subinkrishna:circularimageview:1.2.2'
 }
 ````
 
@@ -24,7 +24,7 @@ Or **Maven:**
 <dependency>
   <groupId>com.subinkrishna</groupId>
   <artifactId>circularimageview</artifactId>
-  <version>1.2.1</version>
+  <version>1.2.2</version>
 </dependency>
 ````
 
@@ -178,24 +178,7 @@ Placeholder text is shown along with custom border & background when no bitmap i
 
 ## Changelog
 
-#### 1.2.1
-
-* Added support for shadows
-
-#### 1.1.0
-
-* Added support for alpha (`setImageAlpha(int alpha)` & `getImageAlpha()`)
-* Added support to enable/disable check state change animation
-* Added support to override check mark style, runtime border visibility
-* Bug fixes
-
-#### 1.0.2
-
-* `CircularImageView` implements `android.widget.Checkable`
-
-#### 1.0.1
-
-* Renamed all custom attributes to suffix `ci_` to avoid conflicts
+You can find the changelog [here][Changelog].
 
 ## Limitations & known issues
 
@@ -223,3 +206,4 @@ Placeholder text is shown along with custom border & background when no bitmap i
 [app]:https://play.google.com/store/apps/details?id=com.subinkrishna.circularimageview.demo
 [picasso]: http://square.github.io/picasso/
 [glide]: https://github.com/bumptech/glide
+[changelog]: Changelog.md
