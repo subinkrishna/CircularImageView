@@ -182,9 +182,39 @@ You can find the changelog [here][Changelog].
 
 ## Limitations & known issues
 
-* Supports only `BitmapDrawable`s.
 * CircularImageView doesn't resize bitmaps to match the view size.
 * No support for animations. Please use `DrawableTypeRequest.asBitmap()` to make CircularImageView to work with [Glide][glide].
+
+## Using vectors/XML drawable resources
+
+As of now, XML drawable resources need to be set using `setImageBitmap()`.
+
+```java
+final Bitmap bitmap = getBitmap(context, resId, width, height);
+image.setImageBitmap(bitmap);
+
+// Converts the drawable resource to Bitmap
+public static Bitmap getBitmap(Context context,
+                               int resId,
+                               int w,
+                               int h) {
+    Drawable drawable = AppCompatDrawableManager.get().getDrawable(context, resId);
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+        drawable = (DrawableCompat.wrap(drawable)).mutate();
+    }
+
+    Bitmap bitmap = (w > 0) && (h > 0)
+            ? Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
+            : null;
+    if (null != bitmap) {
+        final Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+    }
+
+    return bitmap;
+}
+```
 
 ## License
 
